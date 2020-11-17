@@ -1,0 +1,3 @@
+* Emacs
+
+My Emacs setup.
