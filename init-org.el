@@ -58,7 +58,7 @@
   ;; see https://orgmode.org/manual/The-export-dispatcher.html
   (setq org-export-initial-scope 'subtree)
   (setq org-export-with-drawers '(not "LOGBOOK" "CLOCK"))
-  (setq org-export-babel-evaluate nil) ;; do not evaluate code blocks during export, from ob-exp.el
+  (setq org-export-use-babel nil) ;; do not evaluate code blocks during export
   (setq org-html-postamble nil) ; no post-amble
 
   ;; appearance
