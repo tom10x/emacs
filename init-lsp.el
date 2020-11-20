@@ -1,11 +1,3 @@
-;; spinner: Add spinners and progress-bars to the mode-line for ongoing operations
-;;
-;; Needed by lsp-mode
-(use-package spinner
-  :ensure t
-  :pin gnu)
-
-
 ;; lsp-mode: client/library for the Language Server Protocol. Uses
 ;; flycheck for linting, and company-capf for code completion.
 ;;
@@ -25,7 +17,7 @@
   :init
   (setq lsp-keymap-prefix "C-c k")
   (setq lsp-idle-delay 0.500) ;; better performance, see https://emacs-lsp.github.io/lsp-mode/page/performance/
-  (setq lsp-prefer-capf t) ;; make sure we always use company-capf instead of -lsp (obsolete) even if it's available
+  (setq lsp-completion-provider :capf) ;; in lsp-completion.el
   (defun my-lsp-mode-hook ()
     (progn
       (setq-local read-process-output-max (* 1024 1024)) ;; 1 mb
