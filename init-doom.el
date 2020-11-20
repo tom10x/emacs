@@ -1,8 +1,12 @@
 (use-package doom-themes
   :ensure t
+
   :pin melpa-stable
+
   :after (ivy)
+
   :config
+
   (load-theme 'doom-dracula t)
   (set-face-attribute 'org-level-1 nil :height 1.0)
 
@@ -22,9 +26,12 @@
 
 (use-package doom-modeline
   :ensure t
+
   :pin melpa-stable
+
   :init
   (setq doom-modeline-minor-modes t) ;; otherwise Projectile info won't show
   (setq doom-modeline-env-version nil) ;; saves some space
   (setq doom-modeline-buffer-encoding nil)
+
   :hook (after-init . doom-modeline-mode))

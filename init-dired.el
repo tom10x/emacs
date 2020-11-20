@@ -1,8 +1,10 @@
 (use-package dired
   :ensure nil ;; built-in
+
   :functions
   dired-get-filename
   dired-find-file
+
   :init
   (setq ls-lisp-use-insert-directory-program nil) ;; use ls-lisp.el instead of cmd line ls
   (setq ls-lisp-dirs-first t)
@@ -16,9 +18,15 @@
   (setq dired-recursive-copies (quote always)) ; “always” means no asking
   (setq dired-recursive-deletes (quote top)) ; “top” means ask once
 
+  (defun my-dired-open-files-in-external-app ()
+    "Open the file at point in Dired using an external app."
+    (if (string-equal system-type "gnu/linux")
+        (my-dired-open-files-in-external-app-gnu/linux)
+      (dired-find-file) ))
+
   ;; source: https://emacs.stackexchange.com/questions/21796/dired-alternative-to-openwith-how-to-open-file-per-extension
-  (defun my-open-files-in-external-app ()
-    "Open the file at point in Dired. Open in external app if the
+  (defun my-dired-open-files-in-external-app-gnu/linux ()
+    "Open the file at point in Dired on a GNU/Linux system. Open in external app if the
 file has a special extension (.e.g pdf)."
     (interactive)
     (let* ((item (dired-get-filename))
@@ -33,10 +41,12 @@ file has a special extension (.e.g pdf)."
 
   :bind
   (:map dired-mode-map
-        ("RET" . my-open-files-in-external-app))) ;; dired ends here
+        ("RET" . my-dired-open-files-in-external-app))
 
 (use-package dired-x
   :ensure nil ;; built-in
+
   :init
-  (setq dired-guess-shell-alist-user
-        '(("\\.pdf\\'" "xdg-open"))))
+  (when (string-equal "gnu/linux" system-type)
+    (setq dired-guess-shell-alist-user
+          '(("\\.pdf\\'" "xdg-open")))))
