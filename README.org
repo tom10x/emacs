@@ -1,3 +1,144 @@
-* Emacs
+#+TITLE: Emacs
+#+DESCRIPTION: My Emacs setup
 
-My Emacs setup.
+* use-package
+** :init
+Code in =:init= is executed before module is loaded. Restrict to code
+that would work even if loading of module would fail.
+** :ensure
+Using =:ensure nil= for built-in packages.
+* init-web
+
+The package =company-web= provides company backend =company-web-html= for web-mode
+
+Known bugs:
+- There is an issue setting =web-mode-engines-alist= in .dir-locals.el -
+  web mode will not pick it up. It won't pick it up using the function
+  =dir-locals-set-class-variables= either.
+
+Log:
+- 2020-11-13 pin to melpa instead of melpa-stable, hopefully fixes some formatting issues.
+
+See:
+- https://web-mode.org/
+
+* init-spelling
+To find where the dictionary files are, run hunspell once, then check
+=ispell-hunspell-dict-paths-alist=
+
+Switch dictionary with =M-x ispell-change-dictionary=
+
+On Ubuntu 20.04
+- =hunspell-sv= provides =/usr/share/hunspell/sv_SE.dic=
+- =hunspell-en-us= provides =/usr/share/hunspell/en_US.dic=
+* init-projectile
+
+Commands available after prefix key:
+
+| Key | Description                                                                   |
+|-----+-------------------------------------------------------------------------------|
+| =p=   | Switch to project                                                             |
+| =f=   | Open file in project                                                          |
+| =s g= | Run grep on the files in the project.                                         |
+| =o=   | Runs multi-occur on all project buffers currently open.                       |
+| =r=   | Runs interactive query-replace on all files in the projects.                  |
+| =e=   | Shows a list of recently visited project files.                               |
+| =!=   | Runs shell-command in the root directory of the project.                      |
+| =C=   | Runs a standard configure command for your type of project.                   |
+| =c=   | Runs a standard compilation command for your type of project.                 |
+| =P=   | Runs a standard test command for your type of project.                        |
+| =l=   | Display a list of all files in a directory (that’s not necessarily a project) |
+
+The use-package way of defining a prefix key:
+#+begin_example
+:bind-keymap
+("C-c p" . projectile-command-map)
+#+end_example
+
+Another way to do it:
+#+begin_example
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+#+end_example
+
+See:
+- https://docs.projectile.mx/en/latest/
+
+* init-magit
+Magit is a complete text-based user interface to Git.
+
+Most Magit commands are commonly invoked from the status buffer. It
+can be considered the primary interface for interacting with Git
+using Magit.
+
+Status buffer commands:
+
+| Key | Description                                                                                      |
+|-----+--------------------------------------------------------------------------------------------------|
+| =p=   | prevous section                                                                                  |
+| =n=   | next section                                                                                     |
+| =q=   | quit                                                                                             |
+| =TAB= | fold/unfold sections                                                                             |
+| =s=   | stage change at point from the working tree to the index, the change remains in the working tree |
+| =u=   | unstage change at point, remove change from the index, the change remains in the working tree    |
+| =k=   | discard unstaged change at point, remove from index (if staged change) and working tree          |
+| =v=   | reverse                                                                                          |
+| =C-n= | next line inside hunk                                                                            |
+| =C-p= | next/previous line inside hunk                                                                   |
+| =C-.= | select part of hunk with C-. and C-n/C-p to stage/unstage part of hunk                           |
+|     | C-n stage or unstage next part of hunk                                                           |
+|     | C-p stage or unstage previous part of hunk                                                       |
+| =c=   | show commit commands                                                                             |
+|     | C-c C-c create commit                                                                            |
+| =P=   | show push commands                                                                               |
+|     | p push                                                                                           |
+| =h=   | list transients                                                                                  |
+
+* init-org
+
+Note sure about
+: (setq org-agenda-prefer-last-repeat t)
+Removed it for now.
+
+See:
+- https://orgmode.org/manual/Export-settings.html
+- https://orgmode.org/manual/The-export-dispatcher.html
+* init-markdown
+
+To use all of the features of markdown-mode, you'll need to
+install the Emacs package itself and also have a local Markdown
+processor installed (e.g., Markdown.pl, MultiMarkdown, or Pandoc).
+
+Dependencies:
+- pandoc
+
+See:
+- https://github.com/jrblevin/markdown-mode
+* init-lsp
+Client/library for the Language Server Protocol. Uses flycheck for
+linting, and company-capf for code completion.
+
+See
+- https://emacs-lsp.github.io/lsp-mode/page/performance/ about lsp-idle-delay
+
+* init-lsp-yaml
+
+Dependencies:
+  =npm i -g yaml-language-server=
+
+See:
+- https://emacs-lsp.github.io/lsp-mode/page/lsp-yaml/
+- https://stable.melpa.org/#/yaml-mode
+- https://www.emacswiki.org/emacs/YamlMode
+* init-lsp-python
+
+Dependencies:
+- =pip install 'python-language-server[all]'=
+ =[all]= installs =yapf rope pyflakes mccabe pycodestyle ...=
+- =pip install flake8=
+
+flake8 is configurable with a config file file in project root, e.g.
+".flake8". After changing config file, run =M-x lsp-workspace-restart=.
+
+See:
+- https://github.com/palantir/python-language-server
+- https://gitlab.com/pycqa/flake8
