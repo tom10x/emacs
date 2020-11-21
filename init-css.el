@@ -1,4 +1,4 @@
 (use-package css-mode
-  :ensure nil ;; built-in
+  :ensure nil
   :init
   (setq css-indent-offset my/indent-width))
