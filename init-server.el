@@ -1,24 +1,24 @@
 (use-package server
-  :ensure nil ;; built-in
-  :commands ;; create autoloads
+  :ensure nil
+  :commands
   server-running-p
-  :functions ;; silence missing function warning
+  :functions
   my-server-start
   :init
-  (when (equal window-system 'w32) (setq server-use-tcp t))
   (defun my-server-start ()
-    "Start my Emacs server."
+    "Start Emacs server."
     (progn
       (unless (server-running-p)
         (server-start)
-        ;; suppresses: Buffer `blah' still has clients; kill it?
-        (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function))))
+        (remove-hook                            ; Kill buffer without asking, even if
+         'kill-buffer-query-functions           ; there are connected clients.
+         'server-kill-buffer-query-function))))
   (defun my-server-restart ()
-    "Restart my Emacs server."
+    "Restart Emacs server."
     (interactive)
     (progn
       (server-force-delete)
       (my-server-start)))
-  (add-hook 'after-init-hook #'server-start)
-  ;; make emacsclient bring emacs to front
-  (add-hook 'server-switch-hook #'raise-frame))
+  :config
+  (add-hook 'server-switch-hook #'raise-frame)   ; bring Emacs to front when running emacsclient cmd
+  (add-hook 'after-init-hook #'my-server-start)) ; run server after init
