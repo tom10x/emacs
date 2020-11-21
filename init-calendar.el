@@ -1,35 +1,21 @@
 ;; Calendar & Date & Time (Swedish)
 
-(defvar my-system-time-locale "C" "Controls e.g. org-mode weekday names. `C' means use English weekdays.")
+(defvar
+  my-system-time-locale
+  "C"
+  "Controls e.g. org-mode weekday names. `C' means: use English weekdays.")
 
 (setq system-time-locale my-system-time-locale)
 
 (use-package calendar
   :ensure nil ;; built-in
-
   :init
-
-  ;; distinguish calendar-holidays in Calendar
-  (setq calendar-mark-holidays-flag t)
-
-  ;; Weeks start on Monday in Sweden
-  (setq calendar-week-start-day 1)
-
-  ;; Dates in diary and params to diary- functions: year/month/day
-  (setq calendar-date-style 'iso)
-
-  ;; Date format
-  (setq calendar-date-display-form
-        '((if dayname
-              (concat dayname ", "))
-          day " " monthname " " year))
-
-  ;; 24 hour clock without timezone
+  (setq
+   calendar-mark-holidays-flag t
+   calendar-week-start-day 1     ; 1=Monday
+   calendar-date-style 'iso)
   (setq calendar-time-display-form '(24-hours ":" minutes))
-
   :config
-
-  ;; Pretty much copied from https://bigwalter.net/daniel/elisp/sv-kalender.el
   (defun sv-easter (year)
     "Calculate the date for Easter in YEAR."
     (let* ((century (1+ (/ year 100)))
@@ -47,7 +33,6 @@
                              (list 4 19 year))
                             adjusted-epact)))
       (calendar-dayname-on-or-before 0 (+ paschal-moon 7))))
-
   (defun sv-days-from-easter ()
     "When used in a diary sexp, this function will calculate how many days
 are between the current date (DATE) and Easter Sunday."
@@ -94,11 +79,12 @@ are between the current date (DATE) and Easter Sunday."
           (holiday-fixed 12 25 "Juldagen")
           (holiday-fixed 12 26 "Annandag jul")
           (holiday-fixed 12 31 "Nyårsafton")))
+  ;; no other holiday-*-holidays thanks
   (setq calendar-holidays holiday-general-holidays))
 
 ;; Using local vars to turn off this warning in sv-days-from-easter:
 ;;   global/dynamic var ‘date’ lacks a prefix
-;; By design.
+;; It uses `date' by design.
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not lexical)
