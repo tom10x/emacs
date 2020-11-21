@@ -1,20 +1,11 @@
-;; python
-;;
-;; Dependencies (pip using appropriate venv):
-;;   pip install 'python-language-server[all]'
-;;     [all] installs yapf rope pyflakes mccabe pycodestyle ...
-;;   pip install flake8
-;;
-;; flake8 is configurable with e.g. a ".flake8" file in project root.
-;; After changing config file, run M-x lsp-workspace-restart.
-;;
-;; See https://github.com/palantir/python-language-server
-;; See https://gitlab.com/pycqa/flake8
+(defvar my-pyvenv-dir "~/.venv" "Directory with virtual environments.")
+(defvar my-pyvenv-workon "p383" "Virtual environment to use.")
+
 (use-package python-mode
-  :ensure nil ;; built-in
+  :ensure nil
   :init
   ;; PEP8 recommends that Python code indentation be a multiple of four.
-  ;; https://www.flake8rules.com/rules/E111.html
+  ;; See https://www.flake8rules.com/rules/E111.html
   (setq python-indent-offset 4)
   (defun my-python-mode-hook ()
     (progn
@@ -25,10 +16,9 @@
   :hook
   (python-mode . my-python-mode-hook))
 
-;; pyvenv
 (use-package pyvenv
   :ensure t
   :pin melpa-stable
   :config
-  (setenv "WORKON_HOME" "~/.venv")
-  (pyvenv-workon "p383"))
+  (setenv "WORKON_HOME" my-pyvenv-dir)
+  (pyvenv-workon my-pyvenv-workon))
