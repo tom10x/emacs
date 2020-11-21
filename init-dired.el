@@ -1,33 +1,25 @@
 (use-package dired
-  :ensure nil ;; built-in
-
+  :ensure nil
   :functions
   dired-get-filename
   dired-find-file
-
+  my-dired-open-files-in-external-app-gnu/linux
   :init
-  (setq ls-lisp-use-insert-directory-program nil) ;; use ls-lisp.el instead of cmd line ls
-  (setq ls-lisp-dirs-first t)
-  ;; fix time column
-  (setq ls-lisp-use-localized-time-format t)
+  (setq
+   ls-lisp-use-insert-directory-program nil  ; use ls-lisp.el instead of cmd line ls
+   ls-lisp-dirs-first t
+   ls-lisp-use-localized-time-format t
+   dired-listing-switches "-Alh"
+   dired-dwim-target t
+   dired-recursive-copies (quote always)     ; always=don't ask
+   dired-recursive-deletes (quote top))      ; top=ask once
   (setq ls-lisp-format-time-list
         '("%Y-%m-%d %H:%M"
           "%Y-%m-%d %H:%M"))
-  (setq dired-listing-switches "-Alh")
-  (setq dired-dwim-target t)
-  (setq dired-recursive-copies (quote always)) ; “always” means no asking
-  (setq dired-recursive-deletes (quote top)) ; “top” means ask once
-
-  (defun my-dired-open-files-in-external-app ()
-    "Open the file at point in Dired using an external app."
-    (if (string-equal system-type "gnu/linux")
-        (my-dired-open-files-in-external-app-gnu/linux)
-      (dired-find-file) ))
-
-  ;; source: https://emacs.stackexchange.com/questions/21796/dired-alternative-to-openwith-how-to-open-file-per-extension
   (defun my-dired-open-files-in-external-app-gnu/linux ()
-    "Open the file at point in Dired on a GNU/Linux system. Open in external app if the
-file has a special extension (.e.g pdf)."
+    "Open the file at point in Dired on a GNU/Linux system.
+Open in external app if the file has a special extension (.e.g pdf).
+Source: https://emacs.stackexchange.com/questions/21796/dired-alternative-to-openwith-how-to-open-file-per-extension"
     (interactive)
     (let* ((item (dired-get-filename))
            (itemext (downcase (concat "" (file-name-extension item)))))
@@ -35,17 +27,18 @@ file has a special extension (.e.g pdf)."
           (let ((process-connection-type nil))
             (start-process "" nil "xdg-open" item))
         (dired-find-file))))
-
-  ;; auto-refresh dir if dir change on disk
+  (defun my-dired-open-files-in-external-app ()
+    "Open the file at point in Dired in an OS appropriate way."
+    (if (string-equal system-type "gnu/linux")
+        (my-dired-open-files-in-external-app-gnu/linux)
+      (dired-find-file) ))
   (add-hook 'dired-mode-hook #'auto-revert-mode)
-
   :bind
   (:map dired-mode-map
-        ("RET" . my-dired-open-files-in-external-app))
+        ("RET" . my-dired-open-files-in-external-app)))
 
 (use-package dired-x
-  :ensure nil ;; built-in
-
+  :ensure nil
   :init
   (when (string-equal "gnu/linux" system-type)
     (setq dired-guess-shell-alist-user
