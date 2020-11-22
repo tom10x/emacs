@@ -30,6 +30,12 @@ The second part is the headline, where an empty one means append to eof.")
   '("gnuplot" "plantuml")
   "Code blocks in these languages may be evaluated without confirmation.")
 
+(defvar my-org-plantuml-jar-path
+  (expand-file-name "~/prg/plantuml/plantuml.jar")
+  "Path to plantuml jar file.")
+
+;; -----------------------------------------------
+
 (use-package org
   :ensure t
   :pin gnu
@@ -178,21 +184,34 @@ The second part is the headline, where an empty one means append to eof.")
      (visual-line-mode -1)
      (toggle-truncate-lines 1)))
 
-  (org-babel-do-load-languages       ; languages enabled for evaluation (C-c C-c)
-   'org-babel-load-languages
-   '((emacs-lisp . t)
-     (python . t)
-     (shell . t)
-     (org . t)
-     (gnuplot . t)
-     (plantuml . t)))
+  (setq
+   org-src-lang-modes        ; Help org-mode find appropriate major mode.
+   '(("C" . c)               ; There is no need to map a language whose
+     ("C++" . c++)           ; major mode is "<language>-mode".
+     ("bash" . sh)           ; E.g. since gnuplot's major mode is gnuplot-mode,
+     ("beamer" . latex)      ; org-mode will find it anyway.
+     ("calc" . fundamental)
+     ("cpp" . c++)
+     ("dot" . fundamental)
+     ("elisp" . emacs-lisp)
+     ("shell" . sh)
+     ("sqlite" . sql)))
 
   (setq
+   my-org-babel-load-languages-acc  ; List of languages to load.
+   '((emacs-lisp . t)               ; Always load these languages,
+     (shell . t)                    ; then append more as needed below.
+     (org . t)))
+
+  (setq
+   org-plantuml-jar-path my-org-plantuml-jar-path
    org-babel-default-header-args:plantuml
    '((:results  . "file")
      (:exports  . "results")
      (:noweb    . "yes")
      (:cmdline  . "-charset UTF-8")))
+  (add-to-list 'org-src-lang-modes '("plantuml" . fundamental))
+  (add-to-list 'my-org-babel-load-languages-acc '(plantuml . t))
 
   (setq
    org-babel-default-header-args:gnuplot
@@ -200,10 +219,17 @@ The second part is the headline, where an empty one means append to eof.")
      (:exports  . "results")
      (:noweb    . "yes")
      (:prologue . "reset")))
+  (add-to-list 'my-org-babel-load-languages-acc '(gnuplot . t))
 
   (setq
    org-babel-default-header-args:zsh
    '((:results  . "output verbatim replace")))
+
+  (add-to-list 'my-org-babel-load-languages-acc '(python . t))
+
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   my-org-babel-load-languages-acc)
 
   (setq
    org-confirm-babel-evaluate
@@ -214,8 +240,6 @@ The second part is the headline, where an empty one means append to eof.")
    org-src-preserve-indentation t
    org-src-window-setup 'current-window  ; use current window for C-c ' editing
    org-src-fontify-natively t)           ; syntax highlighting in code blocks
-
-  (add-to-list 'org-src-lang-modes '("plantuml" . fundamental))
 
   (setq
    org-capture-templates
