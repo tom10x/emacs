@@ -1,6 +1,21 @@
 #+TITLE: Emacs
 #+DESCRIPTION: My Emacs setup
 
+* init.example.el
+** set-charset-priority
+Not sure what this does:
+: (set-charset-priority 'unicode)
+But it doesn't seem to hurt..
+
+** iso-transl (Ubuntu)
+iso-transl can fix errors like <dead_tilde> <dead-acute> ...
+
+On some non-English systems running Linux, trying to type an
+accented character, for example with a tilde (~), will result in
+“<dead_tilde> is undefined”.
+
+See:
+- https://www.emacswiki.org/emacs/DeadKeys
 * use-package
 ** :init
 Code in =:init= is executed before module is loaded. Restrict to code
