@@ -7,6 +7,56 @@ Code in =:init= is executed before module is loaded. Restrict to code
 that would work even if loading of module would fail.
 ** :ensure
 Using =:ensure nil= for built-in packages.
+* init-core
+** ace-window
+Using melpa because, at the time of writing, current version is 0.9.0 released 2015, with 97 commits since then.
+
+See:
+- https://github.com/abo-abo/ace-window
+** swiper
+isearch with an overview (incremental search)
+
+Notable minibuffer key bindings:
+
+=M-i= insert current candidate into the minibuffer
+
+See
+- https://github.com/abo-abo/swiper
+
+** ivy
+Generic completion frontend (selection from list)
+
+=C-o m= toggles the current regexp builder.
+
+=(ivy-mode 1)= sets completing-read-function to ivy-completing-read.
+
+See:
+- https://github.com/abo-abo/swiper
+- http://oremacs.com/swiper/
+** ivy-rich
+Rich info for ivy searches
+
+See:
+- https://github.com/Yevgnen/ivy-rich
+
+** helpful
+Nicer emacs help
+
+See:
+- https://github.com/Wilfred/helpful
+
+** amx
+amx replaces smex.
+ivy uses amx if it's installed.
+** avy
+ivy uses avy if it's installed.
+** yasnippet
+Custom snippets go in =~/.emacs.d/snippets= and take precedence
+
+=yas-describe-tables= lists available snippets
+** custom
+If we wanted to load the custom-file we could do
+: (load custom-file 'noerror)
 * init-backup
 Backups, auto-saves, sessions, lockfiles.
 
