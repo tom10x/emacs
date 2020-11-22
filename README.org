@@ -13,15 +13,68 @@ Using melpa because, at the time of writing, current version is 0.9.0 released 2
 
 See:
 - https://github.com/abo-abo/ace-window
-** swiper
-isearch with an overview (incremental search)
+** amx
+amx replaces smex.
+ivy uses amx if it's installed.
+** avy
+ivy uses avy if it's installed.
+** company
+Text completion framework
 
-Notable minibuffer key bindings:
+=company-begin-backend= can be used to start a specific backend
 
-=M-i= insert current candidate into the minibuffer
+=M-n= / =M-p= cycles through options
 
-See
-- https://github.com/abo-abo/swiper
+=M-(digit)= completes one of the first 10 candidates.
+
+Stops at the first backend with a result.
+
+Backends built-in:
+
+- company-capf completion-at-point-functions, supports any major mode with a proper completion function
+- company-dabbrev-code dynamic abbrev for code symbols: prog-mode batch-file-mode csharp-mode css-mode erlang-mode haskell-mode jde-mode lua-mode python-mode (and derivatives)
+- company-dabbrev dynamic abbrev, not mode-specific, key bindings `M-/' and `C-M-/'
+- company-files file names, not mode-specific
+- company-keywords programming language keywords, supports many modes (see source code)
+- company-etags access etags (names => definitions): prog-mode c-mode objc-mode c++-mode java-mode jde-mode pascal-mode perl-mode python-mode
+- company-bbdb BBDB (contact management utility) in message-mode (editing mail and news)
+- company-clang c-mode c++-mode objc-mode
+- company-cmake cmake-mode
+- company-eclim Eclim (binary) access to Eclipse Java IDE features. Recommendation is to use emacs-eclim instead.
+- company-gtags GNU Global, I currently don't have it installed
+- company-oddmuse oddmuse-mode (edit Oddmuse wikis)
+- company-semantic semantic-mode (enables convenience functions for some programming languages, global minor mode), probably "-"
+- company-xcode Xcode stuff
+** custom
+If we wanted to load the custom-file we could do
+: (load custom-file 'noerror)
+** flycheck
+Standard tool for linting.
+Provides syntax checking via external external programs or
+services. Multiple checkers can be run in sequence, see
+`flycheck-add-next-checker'.
+
+Not using global-flycheck-mode, prefer to activate it when needed.
+
+Using melpa, because latest version is 31, which was released in 2017,
+and there's been 570+ commits since then.
+
+| Key     | Description          |
+|---------+----------------------|
+| C-c ! v | verify setup         |
+| C-c ! ? | describe checker     |
+| C-c ! l | show error list      |
+| M-g n   | go to next error     |
+| M-g p   | go to previous error |
+
+See:
+- https://www.flycheck.org
+- https://github.com/flycheck/flycheck
+** helpful
+Nicer emacs help
+
+See:
+- https://github.com/Wilfred/helpful
 
 ** ivy
 Generic completion frontend (selection from list)
@@ -39,24 +92,20 @@ Rich info for ivy searches
 See:
 - https://github.com/Yevgnen/ivy-rich
 
-** helpful
-Nicer emacs help
+** swiper
+isearch with an overview (incremental search)
 
-See:
-- https://github.com/Wilfred/helpful
+Notable minibuffer key bindings:
 
-** amx
-amx replaces smex.
-ivy uses amx if it's installed.
-** avy
-ivy uses avy if it's installed.
+=M-i= insert current candidate into the minibuffer
+
+See
+- https://github.com/abo-abo/swiper
+
 ** yasnippet
 Custom snippets go in =~/.emacs.d/snippets= and take precedence
 
 =yas-describe-tables= lists available snippets
-** custom
-If we wanted to load the custom-file we could do
-: (load custom-file 'noerror)
 * init-backup
 Backups, auto-saves, sessions, lockfiles.
 

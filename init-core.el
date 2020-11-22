@@ -288,45 +288,23 @@
   :bind
   (("M-o" . ace-window)))
 
-;; company -- text completion framework
-;;
-;; `company-begin-backend' can be used to start a specific backend
-;; M-n / M-p cycles through options
-;; M-(digit) completes one of the first 10 candidates.
-;;
-;; Stops at the first backend with a result.
-;;
-;; backends built-in:
-;;   company-bbdb          - BBDB (contact management utility) in message-mode (editing mail and news)
-;;   company-capf        +++ completion-at-point-functions, supports any major mode with a proper completion function
-;;   company-clang         - Clang: c-mode c++-mode objc-mode
-;;   company-cmake         - Cmake: cmake-mode
-;;   company-dabbrev       + dynamic abbrev, not mode-specific, key bindings `M-/' and `C-M-/'
-;;   company-dabbrev-code  + dynamic abbrev for code symbols: prog-mode batch-file-mode csharp-mode css-mode erlang-mode haskell-mode jde-mode lua-mode python-mode (and derivatives)
-;;   company-eclim         - Eclim (binary) access to Eclipse Java IDE features. Recommendation is to use emacs-eclim instead.
-;;   company-etags         + access etags (names => definitions): prog-mode c-mode objc-mode c++-mode java-mode jde-mode pascal-mode perl-mode python-mode
-;;   company-files         + file names, not mode-specific
-;;   company-gtags         - GNU Global, I currently don't have it installed
-;;   company-keywords      + programming language keywords, supports many modes (see source code)
-;;   company-oddmuse       - oddmuse-mode (edit Oddmuse wikis)
-;;   company-semantic      ? semantic-mode (enables convenience functions for some programming languages, global minor mode), probably "-"
-;;   company-xcode         - Xcode stuff
 (use-package company
   :ensure t
   :pin melpa-stable ;; in gnu, but company-web is not
   :delight company-mode
   :init
-  (setq company-idle-delay 0.5)
-  (setq company-minimum-prefix-length 3)
-  (setq company-dabbrev-downcase nil)
-  (setq company-dabbrev-ignore-case 'ignore-case-in-candidate-selection)
-  (setq company-tooltip-align-annotations t)
-
-  ;; Adjust company-backends as needed for the different modes
-  (setq company-backends '((company-files company-keywords company-capf) (company-dabbrev-code company-etags) company-dabbrev))
-
+  (setq
+   company-idle-delay 0.5
+   company-minimum-prefix-length 3
+   company-dabbrev-downcase nil
+   company-dabbrev-ignore-case 'ignore-case-in-candidate-selection
+   company-tooltip-align-annotations t
+   company-backends
+   '((company-files company-keywords company-capf)
+     (company-dabbrev-code company-etags)
+     company-dabbrev))
   :config
-  (global-company-mode +1)
+  (global-company-mode 1)
   :bind
   (:map company-active-map
         ("M-n" . nil)
@@ -334,25 +312,6 @@
         ("C-n" . company-select-next)
         ("C-p" . company-select-previous)))
 
-;; flycheck provides syntax checking via external external programs or
-;; services. Multiple checkers can be run in sequence, see
-;; `flycheck-add-next-checker'.
-;;
-;; Standard tool for linting.
-;;
-;; Not using global-flycheck-mode, prefer to activate it when needed.
-;;
-;; melpa, because latest version is 31, which was released in 2017,
-;; and there's been 570+ commits since then.
-;;
-;; C-c ! v   verify setup
-;; C-c ! ?   describe checker
-;; C-c ! l   show error list
-;; M-g n     go to next error
-;; M-g p     go to previous error
-;;
-;; See https://www.flycheck.org
-;; https://github.com/flycheck/flycheck
 (use-package flycheck
   :ensure t
   :pin melpa)
