@@ -1,3 +1,7 @@
+(use-package spinner
+  :ensure t
+  :pin gnu)
+
 (use-package lsp-mode
   :ensure t
   :pin melpa-stable
