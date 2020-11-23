@@ -61,38 +61,38 @@
 
 (defalias 'list-buffers 'ibuffer)
 
-(show-paren-mode 1)                    ; show matching parentheses
-(delete-selection-mode 1)              ; replace selection with next typed char
-(auto-image-file-mode 1)               ; show images on visit
-(tooltip-mode 0)                       ; show help text in minibuffer, not as tooltip
-(tool-bar-mode 0)                      ; no icon tool bar
-(menu-bar-mode 0)                      ; no menu bar
-(blink-cursor-mode 0)                  ; no blinking cursor
+(show-paren-mode 1)                       ; show matching parentheses
+(delete-selection-mode 1)                 ; replace selection with next typed char
+(auto-image-file-mode 1)                  ; show images on visit
+(tooltip-mode 0)                          ; show help text in minibuffer, not as tooltip
+(tool-bar-mode 0)                         ; no icon tool bar
+(menu-bar-mode 0)                         ; no menu bar
+(blink-cursor-mode 0)                     ; no blinking cursor
 (column-number-mode 1)
 (line-number-mode 1)
-(size-indication-mode 0)               ; no buffer size info in modeline
-(save-place-mode 1)                    ; go to last place in file on visit
+(size-indication-mode 0)                  ; no buffer size info in modeline
+(save-place-mode 1)                       ; go to last place in file on visit
 
 (setq-default abbrev-mode t)
 
 (when window-system
-  (global-hl-line-mode 1))             ; highlight current line
+  (global-hl-line-mode 1))                ; highlight current line
 
 (add-hook
  'before-save-hook
  #'delete-trailing-whitespace)
 
 (setq-default
- indent-tabs-mode nil                  ; no tabs for indentation, use spaces
- tab-width my/indent-width            ; distance between tab stops
+ indent-tabs-mode nil                     ; no tabs for indentation, use spaces
+ tab-width my/indent-width                ; distance between tab stops
  sh-basic-offset my/indent-width)
-(setq tab-always-indent 'complete)     ; not all modes respect this variable
+(setq tab-always-indent 'complete)        ; not all modes respect this variable
 
 (setq
  savehist-file my-savehist-file
- history-length t                      ; no truncation of history
+ history-length t                         ; no truncation of history
  history-delete-duplicates t
- savehist-save-minibuffer-history t)   ; save all recorded minibuffer histories
+ savehist-save-minibuffer-history t)      ; save all recorded minibuffer histories
 (savehist-mode 1)
 
 (setq
@@ -103,12 +103,12 @@
 (electric-pair-mode 1)
 
 (setq
- scroll-conservatively 10000        ; >100 so redisplay will never recenter point
- scroll-step 1                      ; lines to try to scroll when point moves out
- scroll-margin 3                    ; lines of context at top and bottom
- scroll-preserve-screen-position t  ; point stays on scroll
- hscroll-step 1)                    ; columns to scroll
-(scroll-bar-mode 0)                 ; no scroll bar
+ scroll-conservatively 10000              ; >100 so redisplay will never recenter point
+ scroll-step 1                            ; lines to try to scroll when point moves out
+ scroll-margin 3                          ; lines of context at top and bottom
+ scroll-preserve-screen-position t        ; point stays on scroll
+ hscroll-step 1)                          ; columns to scroll
+(scroll-bar-mode 0)                       ; no scroll bar
 
 (setq
  window-divider-default-places 'right-only
@@ -117,7 +117,7 @@
 
 (setq
  auto-revert-verbose nil)
-(global-auto-revert-mode t)         ; revert buffer if its file changes
+(global-auto-revert-mode t)               ; revert buffer if its file changes
 
 (global-visual-line-mode 1)
 
@@ -290,7 +290,7 @@
 
 (use-package company
   :ensure t
-  :pin melpa-stable ;; in gnu, but company-web is not
+  :pin melpa-stable
   :delight company-mode
   :init
   (setq
@@ -318,7 +318,7 @@
 
 (use-package which-key
   :ensure t
-  :pin melpa-stable ;; melpa-stable version > gnu
+  :pin melpa-stable
   :delight which-key-mode
   :config
   (which-key-mode))
