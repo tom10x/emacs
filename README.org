@@ -22,6 +22,8 @@ Code in =:init= is executed before module is loaded. Restrict to code
 that would work even if loading of module would fail.
 ** :ensure
 Using =:ensure nil= for built-in packages.
+* init-calendar
+Swedish calendar & date & time.
 * init-core
 ** ace-window
 Using melpa because, at the time of writing, current version is 0.9.0 released 2015, with 97 commits since then.

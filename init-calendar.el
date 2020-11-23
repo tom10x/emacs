@@ -1,5 +1,3 @@
-;; Calendar & Date & Time (Swedish)
-
 (defvar
   my-system-time-locale
   "C"
@@ -8,7 +6,7 @@
 (setq system-time-locale my-system-time-locale)
 
 (use-package calendar
-  :ensure nil ;; built-in
+  :ensure nil
   :init
   (setq
    calendar-mark-holidays-flag t
