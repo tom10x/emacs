@@ -255,6 +255,14 @@ See:
 - https://docs.projectile.mx/en/latest/
 
 * init-spelling
+Spellchecking with hunspell.
+
+In order to get words like "couldn't" and "I'm" to work, I had to
+manually edit the .aff file and add the apostrophe to
+WORDCHARS, like this:
+
+: WORDCHARS 0123456789’
+
 To find where the dictionary files are, run hunspell once, then check
 =ispell-hunspell-dict-paths-alist=
 
