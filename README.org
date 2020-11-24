@@ -1,5 +1,4 @@
-#+TITLE: Emacs
-#+DESCRIPTION: My Emacs setup
+My Emacs setup
 
 * init.example.el
 ** font
