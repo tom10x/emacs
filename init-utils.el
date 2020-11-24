@@ -1,3 +1,8 @@
+(defvar
+  my-secrets-file
+  (concat user-emacs-directory "secrets.el.gpg")
+  "Secret file.")
+
 (defun my-recompile-elpa-and-local-repos ()
   "Recompile ELPA. It's sometimes necessary to recompile a package.
 Remove the offending .elc files with e.g. `find *.elc -print0 | xargs -0 rm -f'
@@ -47,3 +52,8 @@ Then call this function."
 Credit to http://pragmaticemacs.com/emacs/dont-kill-buffer-kill-this-buffer-instead/"
   (interactive)
   (kill-buffer (current-buffer)))
+
+(defun my-load-secrets ()
+  "Load secrets file."
+  (interactive)
+  (load my-secrets-file))
