@@ -265,9 +265,7 @@ On GNU/Linux, add this to your ~/.profile file:
 
 (use-package avy
   :ensure t
-  :pin gnu
-  :bind
-  (("M-s" . avy-goto-char-timer)))
+  :pin gnu)
 
 (use-package amx
   :ensure t
@@ -295,18 +293,11 @@ On GNU/Linux, add this to your ~/.profile file:
   :delight counsel-mode
   :defer 1
   :config
-  (counsel-mode 1)
-  :bind
-  (("C-c i u" . counsel-unicode-char)
-   ("M-x" . counsel-M-x)
-   ("C-t" . counsel-company)))
+  (counsel-mode 1))
 
 (use-package swiper
   :ensure t
-  :pin gnu
-  :bind
-  (("C-s" . swiper)
-   ("C-r" . swiper)))
+  :pin gnu)
 
 (use-package ivy-rich
   :ensure t
@@ -327,9 +318,7 @@ On GNU/Linux, add this to your ~/.profile file:
   (setq
    aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
    aw-scope 'frame
-   aw-background nil)
-  :bind
-  (("M-o" . ace-window)))
+   aw-background nil))
 
 (use-package company
   :ensure t
@@ -365,11 +354,3 @@ On GNU/Linux, add this to your ~/.profile file:
   :delight which-key-mode
   :config
   (which-key-mode))
-
-(global-set-key (kbd "C-c w f") 'my-copy-filename)
-(global-set-key (kbd "C-x 2") 'my-split-window-horizontally)
-(global-set-key (kbd "C-x 3") 'my-split-window-vertically)
-(global-set-key (kbd "C-x k") 'my-kill-this-buffer)
-(global-set-key (kbd "C-ö")  'mode-line-other-buffer)
-(global-set-key (kbd "C-ä")  'ivy-switch-buffer)
-(global-set-key (kbd "<f5> l") 'toggle-truncate-lines)

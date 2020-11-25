@@ -14,6 +14,4 @@
                                     :test "npm run test&"
                                     :run "npm run start&"
                                     :test-suffix ".spec")
-  (projectile-mode +1)
-  :bind-keymap
-  ("C-c p" . projectile-command-map))
+  (projectile-mode +1))

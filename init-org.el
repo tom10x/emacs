@@ -41,13 +41,11 @@ The second part is the headline, where an empty one means append to eof.")
   :pin gnu
   :commands my-org-mode-hook-ispell
   :delight org-indent-mode
-  :bind (("C-c l" . org-store-link)
-         ("C-c c" . org-capture)
-         ("C-c a" . org-agenda)
-         :map org-mode-map
-         ("C-c [" . undefined)
-         ("C-c ]" . undefined)
-         ("C-c ;" . undefined))
+  :bind
+  (:map org-mode-map
+        ("C-c [" . undefined)
+        ("C-c ]" . undefined)
+        ("C-c ;" . undefined))
   :init
   (setq
    org-directory my-org-dir                  ; path to .org files

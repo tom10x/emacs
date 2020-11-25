@@ -12,8 +12,4 @@
 
 (use-package magit
   :ensure t
-  :pin melpa-stable
-  :commands magit-dispatch
-  :bind
-  (("C-x g" . magit-status)
-   ("C-x M-g" . magit-dispatch)))
+  :pin melpa-stable)
