@@ -83,7 +83,7 @@ On GNU/Linux, add this to your ~/.profile file:
  confirm-kill-processes nil               ; no comfirmation on killing processes
  require-final-newline nil                ; no final newline
  mode-require-final-newline nil           ; no final newline, really
- sentence-end-double-space nil            ; not in Sweden
+ sentence-end-double-space nil            ; no, just no
  mouse-highlight nil)                     ; no highlight as mouse hovers over link
 
 (fset 'yes-or-no-p 'y-or-n-p)             ; y/n is good enough
