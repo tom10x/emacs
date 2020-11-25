@@ -103,6 +103,7 @@ On GNU/Linux, add this to your ~/.profile file:
 (line-number-mode 1)
 (size-indication-mode 0)                  ; no buffer size info in modeline
 (save-place-mode 1)                       ; go to last place in file on visit
+(global-visual-line-mode 1)
 
 (setq-default abbrev-mode t)
 
