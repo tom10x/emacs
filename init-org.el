@@ -30,6 +30,10 @@ The second part is the headline, where an empty one means append to eof.")
   '("gnuplot" "plantuml")
   "Code blocks in these languages may be evaluated without confirmation.")
 
+(defvar my-org-babel-python-command
+  "python3"
+  "Python executable.")
+
 (defvar my-org-plantuml-jar-path
   (expand-file-name "~/prg/plantuml/plantuml.jar")
   "Path to plantuml jar file.")
@@ -223,6 +227,8 @@ The second part is the headline, where an empty one means append to eof.")
    org-babel-default-header-args:zsh
    '((:results  . "output verbatim replace")))
 
+  (setq
+   org-babel-python-command my-org-babel-python-command)
   (add-to-list 'my-org-babel-load-languages-acc '(python . t))
 
   (org-babel-do-load-languages
