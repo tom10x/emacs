@@ -1,8 +1,14 @@
+(defvar
+  my-projectile-project-search-path
+  '("~/projects/")
+  "List of folders projectile will scan for projects.")
+
 (use-package projectile
   :ensure t
   :pin melpa-stable
   :init
   (setq
+   projectile-project-search-path my-projectile-project-search-path
    projectile-switch-project-action #'projectile-find-file
    projectile-mode-line-prefix " P"
    projectile-completion-system 'ivy
