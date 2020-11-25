@@ -1,28 +1,33 @@
-(require 'package)
-(setq package-archives
-      '(("gnu" . "https://elpa.gnu.org/packages/")
-        ("melpa-stable" . "https://stable.melpa.org/packages/")
-        ("org" . "https://orgmode.org/elpa/")
-        ("melpa" . "https://melpa.org/packages/")))
-(setq package-archive-priorities
-      '(("melpa" . -1)
-        ("org"   . -1)))
-(package-initialize)
+(let ((dir "~/repo/emacs/"))
+  (load (concat dir "init-core"))
+  (load (concat dir "init-utils"))
+  (load (concat dir "init-backup"))
+  (load (concat dir "init-calendar-sv"))
+  (load (concat dir "init-spelling"))
+  (load (concat dir "init-org"))
+  (load (concat dir "init-projectile"))
+  (load (concat dir "init-dired"))
+  (load (concat dir "init-lsp"))
+  (load (concat dir "init-lsp-python"))
+  (load (concat dir "init-lsp-yaml"))
+  (load (concat dir "init-magit"))
+  (load (concat dir "init-writing"))
+  (load (concat dir "init-web-html"))
+  (load (concat dir "init-css"))
+  (load (concat dir "init-json"))
+  (load (concat dir "init-markdown"))
+  (load (concat dir "init-gnuplot"))
+  (load (concat dir "init-doom"))
+  (load (concat dir "init-server"))
+  (load (concat dir "init-keybindings")))
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+(set-frame-font "Fira Code-12")
+(setq-default line-spacing 4)
 
-(when (string-equal system-type "gnu/linux")
-  (require 'iso-transl))
+(add-to-list 'org-refile-targets '("fun.org" :maxlevel . 2) 'append)
 
-;; Encoding
-(prefer-coding-system 'utf-8-unix)
-(set-default-coding-systems 'utf-8)
-(set-charset-priority 'unicode)
-(set-language-environment "UTF-8")
-
-(set-frame-font "Fira Code-12")  ; nicer font
-(setq-default line-spacing 4)    ; font may require line space tweaking
-
-(load "path/to/init-core.el")
+(defun my-after-init-hook-setup ()
+  (progn
+    (org-agenda nil " ")
+    (toggle-frame-maximized)))
+(add-hook 'after-init-hook #'my-after-init-hook-setup)
