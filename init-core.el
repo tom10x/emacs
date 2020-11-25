@@ -26,7 +26,38 @@
   (concat user-emacs-directory "recentf")
   "Recent list save file.")
 
-;; ---------------------------------------------
+(defvar
+  my-package-archives
+  '(("gnu" . "https://elpa.gnu.org/packages/")
+    ("melpa-stable" . "https://stable.melpa.org/packages/")
+    ("org" . "https://orgmode.org/elpa/")
+    ("melpa" . "https://melpa.org/packages/"))
+  "Package archives.")
+
+(defvar
+  my-package-archive-priorities
+  '(("melpa" . -1)
+    ("org"   . -1))
+  "Package archive priorities.")
+
+(defvar
+  my-collate
+  "sv_SE.UTF-8"
+  "Collate to use when sorting, for example.")
+
+;; -----------------------------------------------
+
+(let ((env "LC_COLLATE"))
+  (unless (string-equal my-collate (getenv env))
+    (error (format "The environment variable %s is not set correctly.
+On GNU/Linux, add this to your ~/.profile file:
+
+  export %s=%s" env env my-collate))))
+
+(prefer-coding-system 'utf-8-unix)
+(set-default-coding-systems 'utf-8-unix)
+(set-charset-priority 'unicode)
+(set-language-environment "UTF-8")
 
 (setq
  gc-cons-threshold (* 100 1024 1024)      ; boost garbage collection threshold
@@ -119,9 +150,20 @@
  auto-revert-verbose nil)
 (global-auto-revert-mode t)               ; revert buffer if its file changes
 
-(global-visual-line-mode 1)
+;; -----------------------------------------------
 
+(require 'package)
+(setq
+ package-archives my-package-archives
+ package-archive-priorities my-package-archive-priorities)
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 (require 'use-package)
+
+;; -----------------------------------------------
 
 (use-package delight
   :ensure t
