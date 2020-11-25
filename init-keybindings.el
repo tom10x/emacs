@@ -1,6 +1,9 @@
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)  ; prefix key
 (global-set-key (kbd "<f5> l") 'toggle-truncate-lines)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c i u") 'counsel-unicode-char)
+(global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c w f") 'my-copy-filename)
 (global-set-key (kbd "C-s") 'swiper)
 (global-set-key (kbd "C-t") 'counsel-company)
@@ -14,6 +17,3 @@
 (global-set-key (kbd "M-j") 'avy-goto-char-timer)
 (global-set-key (kbd "M-o") 'ace-window)
 (global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-c l") 'org-store-link)
-(global-set-key (kbd "C-c c") 'org-capture)
-(global-set-key (kbd "C-c a") 'org-agenda)
