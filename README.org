@@ -142,13 +142,6 @@ See:
 The function =sv-easter= was pretty much copied from https://bigwalter.net/daniel/elisp/sv-kalender.el
 * init-json
 Without json-mode, Emacs uses js-mode for .json files.
-* init-lsp
-Client/library for the Language Server Protocol. Uses flycheck for
-linting, and company-capf for code completion.
-
-See
-- https://emacs-lsp.github.io/lsp-mode/page/performance/ about lsp-idle-delay
-
 * init-magit
 Magit is a complete text-based user interface to Git.
 
@@ -267,3 +260,11 @@ Log:
 
 See:
 - https://web-mode.org/
+* Obsolete packages
+Packages I no longer actively use. I don't know if the setup still works.
+** init-lsp
+Client/library for the Language Server Protocol. Uses flycheck for
+linting, and company-capf for code completion.
+
+See
+- https://emacs-lsp.github.io/lsp-mode/page/performance/ about lsp-idle-delay
