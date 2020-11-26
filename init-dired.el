@@ -16,10 +16,9 @@
   (setq ls-lisp-format-time-list
         '("%Y-%m-%d %H:%M"
           "%Y-%m-%d %H:%M"))
+  :config
   (defun my-dired-open-files-in-external-app-gnu/linux ()
-    "Open the file at point in Dired on a GNU/Linux system.
-Open in external app if the file has a special extension (.e.g pdf).
-Source: https://emacs.stackexchange.com/questions/21796/dired-alternative-to-openwith-how-to-open-file-per-extension"
+    "Open file on a GNU/Linux system."
     (interactive)
     (let* ((item (dired-get-filename))
            (itemext (downcase (concat "" (file-name-extension item)))))
@@ -28,7 +27,9 @@ Source: https://emacs.stackexchange.com/questions/21796/dired-alternative-to-ope
             (start-process "" nil "xdg-open" item))
         (dired-find-file))))
   (defun my-dired-open-files-in-external-app ()
-    "Open the file at point in Dired in an OS appropriate way."
+    "Open the file at point in Dired in an OS appropriate way.
+Open in external app if the file has a special extension.
+Source: https://emacs.stackexchange.com/questions/21796/dired-alternative-to-openwith-how-to-open-file-per-extension"
     (if (string-equal system-type "gnu/linux")
         (my-dired-open-files-in-external-app-gnu/linux)
       (dired-find-file) ))
