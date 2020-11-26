@@ -1,30 +1,29 @@
-My Emacs setup
+My Emacs configuration.
+
+The configuration is split into several files. The idea is to load the ones you want from your init file.
 
 * init.example.el
-** font
-I like Fira Code
-: (set-frame-font "Fira Code-12")
-See  https://github.com/tonsky/FiraCode
+Example of what an init file might look like.
 
-DejaVu Sans Mono-12 is also nice.
-
-It may be necessary to adjust the line spacing:
-: (setq-default line-spacing 4)
-
-** set-charset-priority
-Not sure what this does:
-: (set-charset-priority 'unicode)
-But it doesn't seem to hurt..
-
+It loads a selection of init-files and customizes a few things.
 * use-package
+Some notes about use-package.
 ** :init
-Code in =:init= is executed before module is loaded. Restrict to code
-that would work even if loading of module would fail.
+Code in :init is executed before module is loaded. It should not break
+things even if the module fails to load.
+
+Keep :init as small as possible, i.e. put as much as possible in the
+:config block, this can improve startup time.
 ** :ensure
-Using =:ensure nil= for built-in packages.
+Using :ensure nil for built-in packages.
 * init-calendar-sv
-Swedish calendar & date & time.
+Calendar, date, and time config with a few Swedish tweaks.
 * init-core
+
+Full disclosure, I don't know what this does:
+: (set-charset-priority 'unicode)
+Doesn't seem to hurt though.
+
 ** ace-window
 Using melpa because, at the time of writing, current version is 0.9.0 released 2015, with 97 commits since then.
 
@@ -150,19 +149,6 @@ linting, and company-capf for code completion.
 See
 - https://emacs-lsp.github.io/lsp-mode/page/performance/ about lsp-idle-delay
 
-* init-lsp-python
-
-Dependencies:
-- =pip install 'python-language-server[all]'=
- =[all]= installs =yapf rope pyflakes mccabe pycodestyle ...=
-- =pip install flake8=
-
-flake8 is configurable with a config file file in project root, e.g.
-".flake8". After changing config file, run =M-x lsp-workspace-restart=.
-
-See:
-- https://github.com/palantir/python-language-server
-- https://gitlab.com/pycqa/flake8
 * init-lsp-yaml
 
 Dependencies:
@@ -213,6 +199,11 @@ Dependencies:
 
 See:
 - https://github.com/jrblevin/markdown-mode
+* init-python
+Basic python setup using pyvenv, "Python virtual environment interface".
+
+See:
+- https://docs.python.org/3/library/venv.html
 * init-org
 
 Note sure about
