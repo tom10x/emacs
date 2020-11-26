@@ -38,7 +38,7 @@ The second part is the headline, where an empty one means append to eof.")
   (expand-file-name "~/prg/plantuml/plantuml.jar")
   "Path to plantuml jar file.")
 
-;; -----------------------------------------------
+;; ------------------------------------------------
 
 (use-package org
   :ensure t
@@ -260,6 +260,8 @@ The second part is the headline, where an empty one means append to eof.")
       (file "todo.org")
       "* DONE %?\n\n")))
 
+  :config
+
   (defun my-org-mode-hook-ispell ()
     "Configure ispell for org-mode.
 Important to skip certain regions, e.g. begin_src ... end_src"
@@ -270,13 +272,11 @@ Important to skip certain regions, e.g. begin_src ... end_src"
     (add-to-list 'ispell-skip-region-alist '("=" "="))
     (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC"))
     (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_EXAMPLE" . "^#\\+END_EXAMPLE")))
+
   (add-hook 'org-mode-hook #'my-org-mode-hook-ispell)
-
   (add-hook 'org-mode-hook 'org-indent-mode)
-
   (add-hook 'org-mode-hook #'yas-minor-mode)
 
-  :config
   (org-id-update-id-locations
    (file-expand-wildcards (concat my-org-dir "*.org") t)))
 
