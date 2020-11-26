@@ -20,4 +20,4 @@
                                     :test "npm run test&"
                                     :run "npm run start&"
                                     :test-suffix ".spec")
-  (projectile-mode +1))
+  (projectile-mode 1))
