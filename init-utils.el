@@ -3,6 +3,8 @@
   (concat user-emacs-directory "secrets.el.gpg")
   "Secret file.")
 
+;; ------------------------------------------------
+
 (defun my-recompile-elpa-and-local-repos ()
   "Recompile ELPA. It's sometimes necessary to recompile a package.
 Remove the offending .elc files with e.g. `find *.elc -print0 | xargs -0 rm -f'
