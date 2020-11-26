@@ -1,11 +1,3 @@
-(use-package json-reformat
-  :ensure t
-  :pin melpa-stable)
-
-(use-package json-snatcher
-  :ensure t
-  :pin melpa-stable)
-
 (use-package json-mode
   :ensure t
   :pin melpa-stable
