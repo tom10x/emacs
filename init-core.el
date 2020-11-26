@@ -355,3 +355,9 @@ On GNU/Linux, add this to your ~/.profile file:
   :delight which-key-mode
   :config
   (which-key-mode))
+
+;; -----------------------------------------------
+
+(use-package yaml-mode
+  :ensure t
+  :pin melpa-stable)

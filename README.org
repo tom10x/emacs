@@ -149,15 +149,6 @@ linting, and company-capf for code completion.
 See
 - https://emacs-lsp.github.io/lsp-mode/page/performance/ about lsp-idle-delay
 
-* init-lsp-yaml
-
-Dependencies:
-  =npm i -g yaml-language-server=
-
-See:
-- https://emacs-lsp.github.io/lsp-mode/page/lsp-yaml/
-- https://stable.melpa.org/#/yaml-mode
-- https://www.emacswiki.org/emacs/YamlMode
 * init-magit
 Magit is a complete text-based user interface to Git.
 
