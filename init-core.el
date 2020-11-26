@@ -302,7 +302,8 @@ On GNU/Linux, add this to your ~/.profile file:
 (use-package ivy-rich
   :ensure t
   :pin melpa-stable
-  :config (ivy-rich-mode 1))
+  :config
+  (ivy-rich-mode 1))
 
 (use-package helpful
   :ensure t
