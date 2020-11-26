@@ -1,4 +1,7 @@
-(defvar my-markdown-command "pandoc" "Command to run markdown.")
+(defvar
+  my-markdown-command
+  "pandoc"
+  "Command to run markdown.")
 
 (use-package markdown-mode
   :ensure t
