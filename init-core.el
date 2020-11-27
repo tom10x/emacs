@@ -358,6 +358,8 @@ On GNU/Linux, add this to your ~/.profile file:
 
 ;; -----------------------------------------------
 
-(use-package yaml-mode
-  :ensure t
-  :pin melpa-stable)
+(dolist (filesupport '("init-yaml"
+                       "init-markdown"
+                       "init-json"
+                       "init-web-html"))
+  (load (concat my-init-dir filesupport)))

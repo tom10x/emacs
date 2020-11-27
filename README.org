@@ -1,13 +1,13 @@
 My Emacs configuration.
 
-The configuration is split into several files. The idea is to load the ones you want from your init file.
+The configuration is split into several files.
 
 * init.example.el
 Example of what an init file might look like.
 
 It loads a selection of init-files and customizes a few things.
-* use-package
-Some notes about use-package.
+* Notes on use-package
+Some notes about the use of use-package.
 ** :init
 Code in :init is executed before module is loaded. It should not break
 things even if the module fails to load.
@@ -16,8 +16,26 @@ Keep :init as small as possible, i.e. put as much as possible in the
 :config block, this can improve startup time.
 ** :ensure
 Using :ensure nil for built-in packages.
+* init-backup
+Backups, auto-saves, sessions, lockfiles.
+
+- backup files (~file)
+  Emacs creates a backup file the first time a buffer is saved, and ONLY the first time
+- auto-save files (#file#)
+- session files (<pid>-<hostname>~)
+  Emacs records information about interrupted sessions in files named
+  <pid>-<hostname>~ in the directory specified by auto-save-list-file-prefix
+- special "symbolic link" file on windows (.#file)
+  created on first modification of buffer visiting a file
+  created in the same directory as the file
+  file is removed when changes are saved
+
+See:
+- https://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html
 * init-calendar-sv
 Calendar, date, and time config with a few Swedish tweaks.
+
+The function =sv-easter= was pretty much copied from https://bigwalter.net/daniel/elisp/sv-kalender.el
 * init-core
 
 Full disclosure, I don't know what this does:
@@ -122,26 +140,30 @@ See
 Custom snippets go in =~/.emacs.d/snippets= and take precedence
 
 =yas-describe-tables= lists available snippets
-* init-backup
-Backups, auto-saves, sessions, lockfiles.
-
-- backup files (~file)
-  Emacs creates a backup file the first time a buffer is saved, and ONLY the first time
-- auto-save files (#file#)
-- session files (<pid>-<hostname>~)
-  Emacs records information about interrupted sessions in files named
-  <pid>-<hostname>~ in the directory specified by auto-save-list-file-prefix
-- special "symbolic link" file on windows (.#file)
-  created on first modification of buffer visiting a file
-  created in the same directory as the file
-  file is removed when changes are saved
+* init-dired
+Dired setup.
+* init-doom
+Emacs doom-theme with doom-modeline.
+* init-gnuplot
+Gnuplot support.
 
 See:
-- https://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html
-* init-calendar
-The function =sv-easter= was pretty much copied from https://bigwalter.net/daniel/elisp/sv-kalender.el
+- https://en.wikipedia.org/wiki/Gnuplot
 * init-json
+JSON file support.
+
 Without json-mode, Emacs uses js-mode for .json files.
+* init-keybindings
+Global keybindings.
+* init-lsp (not in use)
+Client/library for the Language Server Protocol. Uses flycheck for
+linting, and company-capf for code completion.
+
+I don't use it anymore. The configuration may or may not work.
+
+See
+- https://emacs-lsp.github.io/lsp-mode/page/performance/ about lsp-idle-delay
+
 * init-magit
 Magit is a complete text-based user interface to Git.
 
@@ -173,22 +195,15 @@ Status buffer commands:
 | =h=   | list transients                                                                                  |
 
 * init-markdown
-
-To use all of the features of markdown-mode, you'll need to
-install the Emacs package itself and also have a local Markdown
-processor installed (e.g., Markdown.pl, MultiMarkdown, or Pandoc).
+Markdown file support.
 
 Dependencies:
-- pandoc
+- pandoc, in my case.
 
 See:
 - https://github.com/jrblevin/markdown-mode
-* init-python
-Basic python setup using pyvenv, "Python virtual environment interface".
-
-See:
-- https://docs.python.org/3/library/venv.html
 * init-org
+Org-mode.
 
 Note sure about
 : (setq org-agenda-prefer-last-repeat t)
@@ -229,8 +244,15 @@ Another way to do it:
 See:
 - https://docs.projectile.mx/en/latest/
 
+* init-python
+Basic python setup using pyvenv, "Python virtual environment interface".
+
+See:
+- https://docs.python.org/3/library/venv.html
+* init-server
+Start Emacs server.
 * init-spelling
-Spellchecking with hunspell.
+American and Swedish spellchecking with hunspell.
 
 In order to get words like "couldn't" and "I'm" to work, I had to
 manually edit the .aff file and add the apostrophe to
@@ -245,26 +267,23 @@ Switch dictionary with =M-x ispell-change-dictionary=
 
 On Ubuntu 20.04
 - =hunspell-sv= provides =/usr/share/hunspell/sv_SE.dic=
-- =hunspell-en-us= provides =/usr/share/hunspell/en_US.dic=
-* init-web
+- =hunspell-en-us= provides =/usr/share/hunspell/en_US.dic= (may lack the apostrophe in WORDCHARS)
+* init-utils
+Collection of convenience functions.
+* init-web-html
+Supports editing .html files with the go-engine. I don't use web-mode for anything else, yet.
 
-The package =company-web= provides company backend =company-web-html= for web-mode
+The package =company-web= provides company backend =company-web-html= for web-mode.
 
-Known bugs:
-- There is an issue setting =web-mode-engines-alist= in .dir-locals.el -
-  web mode will not pick it up. It won't pick it up using the function
-  =dir-locals-set-class-variables= either.
-
-Log:
-- 2020-11-13 pin to melpa instead of melpa-stable, hopefully fixes some formatting issues.
+Known issues:
+- It seems =web-mode-engines-alist= is the only way to specify the
+  go-engine. I'd prefer to use .dir-locals, i.e. per project, but
+  web-mode won't pick it up from there. =dir-locals-set-class-variables=
+  doesn't seem to work either.
 
 See:
 - https://web-mode.org/
-* Obsolete packages
-Packages I no longer actively use. I don't know if the setup still works.
-** init-lsp
-Client/library for the Language Server Protocol. Uses flycheck for
-linting, and company-capf for code completion.
-
-See
-- https://emacs-lsp.github.io/lsp-mode/page/performance/ about lsp-idle-delay
+* init-writing
+Distraction-free writing.
+* init-yaml
+Support for .yml and .yaml files.
