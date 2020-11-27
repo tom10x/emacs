@@ -1,6 +1,4 @@
-(use-package spinner
-  :ensure t
-  :pin gnu)
+;; NB! I don't use lsp anymore. The configuration below may no longer work.
 
 (use-package lsp-mode
   :ensure t
