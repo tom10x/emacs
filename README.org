@@ -42,6 +42,9 @@ Full disclosure, I don't know what this does:
 : (set-charset-priority 'unicode)
 Doesn't seem to hurt though.
 
+If we wanted to load the custom-file we could do
+: (load custom-file 'noerror)
+
 ** ace-window
 Using melpa because, at the time of writing, current version is 0.9.0 released 2015, with 97 commits since then.
 
@@ -79,9 +82,10 @@ Backends built-in:
 - company-oddmuse oddmuse-mode (edit Oddmuse wikis)
 - company-semantic semantic-mode (enables convenience functions for some programming languages, global minor mode), probably "-"
 - company-xcode Xcode stuff
-** custom
-If we wanted to load the custom-file we could do
-: (load custom-file 'noerror)
+** counsel
+[2020-11-28 Sat] gnu has a more recent version (0.13.1) than melpa-stable (0.13.0)
+** delight
+[2020-11-28 Sat] delight is only available on gnu.
 ** flycheck
 Standard tool for linting.
 Provides syntax checking via external external programs or
@@ -117,6 +121,8 @@ Generic completion frontend (selection from list)
 
 =(ivy-mode 1)= sets completing-read-function to ivy-completing-read.
 
+[2020-11-28 Sat] gnu has a more recent version (0.13.1) than melpa-stable (0.13.0)
+
 See:
 - https://github.com/abo-abo/swiper
 - http://oremacs.com/swiper/
@@ -132,6 +138,8 @@ isearch with an overview (incremental search)
 Notable minibuffer key bindings:
 
 =M-i= insert current candidate into the minibuffer
+
+[2020-11-28 Sat] gnu has a more recent version (0.13.1) than melpa-stable (0.13.0)
 
 See
 - https://github.com/abo-abo/swiper
@@ -276,6 +284,8 @@ Supports editing .html files with the go-engine. I don't use web-mode for anythi
 The package =company-web= provides company backend =company-web-html= for web-mode.
 
 Known issues:
+- [2020-11-28 Sat] Current release 17 on melpa-stable was a bit buggy
+  for me so I switched to melpa.
 - It seems =web-mode-engines-alist= is the only way to specify the
   go-engine. I'd prefer to use .dir-locals, i.e. per project, but
   web-mode won't pick it up from there. =dir-locals-set-class-variables=
