@@ -1,7 +1,3 @@
-(use-package web-completion-data
-  :ensure t
-  :pin melpa-stable)
-
 (use-package company-web
   :ensure t
   :pin melpa-stable)

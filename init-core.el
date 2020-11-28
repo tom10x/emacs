@@ -164,8 +164,6 @@ On GNU/Linux, add this to your ~/.profile file:
   (package-install 'use-package))
 (require 'use-package)
 
-;; -----------------------------------------------
-
 (use-package delight
   :ensure t
   :pin gnu
@@ -175,63 +173,7 @@ On GNU/Linux, add this to your ~/.profile file:
   (delight 'eldoc-mode nil "eldoc")
   (delight 'auto-revert-mode nil t))
 
-(use-package dash
-  :ensure t
-  :pin melpa-stable)
-
-(use-package dash-functional
-  :ensure t
-  :pin melpa-stable)
-
-(use-package s
-  :ensure t
-  :pin melpa-stable)
-
-(use-package ht
-  :ensure t
-  :pin melpa-stable)
-
-(use-package f
-  :ensure t
-  :pin melpa-stable)
-
-(use-package epl
-  :ensure t
-  :pin melpa-stable)
-
-(use-package bind-key
-  :ensure t
-  :pin melpa-stable)
-
-(use-package async
-  :ensure t
-  :pin melpa-stable)
-
-(use-package treepy
-  :ensure t
-  :pin melpa-stable)
-
-(use-package lv
-  :ensure t
-  :pin melpa-stable)
-
-(use-package memoize
-  :ensure t
-  :pin melpa-stable)
-
-(use-package shrink-path
-  :ensure t
-  :pin melpa-stable)
-
 (use-package all-the-icons
-  :ensure t
-  :pin melpa-stable)
-
-(use-package pkg-info
-  :ensure t
-  :pin melpa-stable)
-
-(use-package with-editor
   :ensure t
   :pin melpa-stable)
 
@@ -265,7 +207,7 @@ On GNU/Linux, add this to your ~/.profile file:
 
 (use-package avy
   :ensure t
-  :pin gnu)
+  :pin melpa-stable)
 
 (use-package amx
   :ensure t
@@ -314,7 +256,7 @@ On GNU/Linux, add this to your ~/.profile file:
 
 (use-package ace-window
   :ensure t
-  :pin melpa
+  :pin melpa-stable
   :init
   (setq
    aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
