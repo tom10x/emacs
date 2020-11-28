@@ -163,15 +163,6 @@ JSON file support.
 Without json-mode, Emacs uses js-mode for .json files.
 * init-keybindings
 Global keybindings.
-* init-lsp (not in use)
-Client/library for the Language Server Protocol. Uses flycheck for
-linting, and company-capf for code completion.
-
-I don't use it anymore. The configuration may or may not work.
-
-See
-- https://emacs-lsp.github.io/lsp-mode/page/performance/ about lsp-idle-delay
-
 * init-magit
 Magit is a complete text-based user interface to Git.
 
