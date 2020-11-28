@@ -179,7 +179,7 @@ On GNU/Linux, add this to your ~/.profile file:
 
 (use-package yasnippet
   :ensure t
-  :pin gnu
+  :pin melpa-stable
   :commands
   yas-reload-all
   :delight yas-minor-mode
