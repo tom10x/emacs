@@ -151,6 +151,17 @@ On GNU/Linux, add this to your ~/.profile file:
  auto-revert-verbose nil)
 (global-auto-revert-mode t)               ; revert buffer if its file changes
 
+(setq
+ recentf-save-file my-recentf-save-file
+ recentf-max-saved-items 1000)
+(recentf-mode 1)
+(run-at-time
+ nil
+ 600
+ (lambda ()
+   (let ((inhibit-message t))
+     (recentf-save-list))))
+
 ;; -----------------------------------------------
 
 (require 'package)
@@ -188,22 +199,6 @@ On GNU/Linux, add this to your ~/.profile file:
   :config
   (yas-reload-all)
   (add-hook 'prog-mode-hook #'yas-minor-mode))
-
-(use-package recentf
-  :ensure nil
-  :init
-  (setq
-   recentf-save-file my-recentf-save-file
-   recentf-max-saved-items 1000
-   recentf-auto-cleanup 'never)
-  :config
-  (recentf-mode 1)
-  (run-at-time
-   nil
-   600
-   (lambda ()
-     (let ((inhibit-message t))
-       (recentf-save-list)))))
 
 (use-package avy
   :ensure t
