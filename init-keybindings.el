@@ -9,6 +9,7 @@
 (global-set-key (kbd "C-t") 'counsel-company)
 (global-set-key (kbd "C-x 2") 'my-split-window-horizontally)
 (global-set-key (kbd "C-x 3") 'my-split-window-vertically)
+(global-set-key (kbd "C-x C-d") 'dired)
 (global-set-key (kbd "C-x M-g") 'magit-dispatch)
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-x k") 'my-kill-this-buffer)
