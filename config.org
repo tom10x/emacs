@@ -1,7 +1,62 @@
 #+TITLE: My Emacs Configuration
 
-* 1. Core - Security
-Priority 1. Always do security first.
+* 1. Setup
+Do setup first.
+
+#+begin_src elisp
+(defvar
+  my/indent-width 2
+  "Default number of spaces to indent each line.")
+
+(defvar
+  my-package-archives
+  '(("gnu" . "https://elpa.gnu.org/packages/")
+    ("melpa-stable" . "https://stable.melpa.org/packages/")
+    ("org" . "https://orgmode.org/elpa/")
+    ("melpa" . "https://melpa.org/packages/"))
+  "Package archives.")
+
+(defvar
+  my-package-archive-priorities
+  '(("melpa" . -1)
+    ("org"   . -1))
+  "Package archive priorities.")
+
+(defvar
+  my-system-time-locale
+  "C"
+  "Controls e.g. org-mode weekday names. `C' means: use English weekdays.")
+
+(defvar
+  my-spelling-default-dictionary
+  "en_US"
+  "The default dictionary to use.")
+
+(defvar
+  my-spelling-binary
+  "hunspell"
+  "Binary to use, specify full path if its not on PATH.")
+
+(defvar
+  my-projectile-project-search-path
+  '("~/projects/")
+  "List of folders projectile will scan for projects.")
+
+(defvar
+  my-markdown-command
+  "pandoc"
+  "Command to run markdown.")
+
+(let ((env "LC_COLLATE")
+      (collate "sv_SE.UTF-8"))
+  (unless (string-equal collate (getenv env))
+    (error (format "The environment variable %s is not set correctly.
+On GNU/Linux, add this to the ~/.profile file:
+
+  export %s=%s" env env collate))))
+#+end_src
+* 2. Core - Security
+Setup security before any external calls.
 
 #+begin_src elisp
 (setq
@@ -9,8 +64,8 @@ Priority 1. Always do security first.
  gnutls-verify-error t)
 #+end_src
 
-* 2. Core - Package setup
-Priority 2. Always setup package and use-package second. Important to do early, before calling use-package.
+* 3. Core - Package setup
+Setup package and use-package before any calls to use-package.
 
 #+begin_src elisp
 (require 'package)
@@ -24,29 +79,22 @@ Priority 2. Always setup package and use-package second. Important to do early, 
   (package-install 'use-package))
 (require 'use-package)
 #+end_src
-* 3. Core - Utils
-Priority 3. My core utility functions.
+* 4. Core - Utils
+My core utility functions.
 
 #+begin_src elisp
-(defun my-recompile-elpa-and-local-repos ()
-  "Recompile ELPA. It's sometimes necessary to recompile a package.
+(defun my-recompile-all ()
+  "Recompile everything, including this directory and elpa.
+It's sometimes necessary to recompile a package.
 Remove the offending .elc files with e.g. `find *.elc -print0 | xargs -0 rm -f'
 Then call this function."
   (interactive)
-  (let ((elpa-dir (expand-file-name (concat user-emacs-directory "elpa")))
-        (local-repo-dir (expand-file-name (concat user-emacs-directory "elisp")))
-        (flag 0)) ;; 0=DO compile .el file without corresponding .elc file
+  (let ((this-dir (file-name-directory (or load-file-name buffer-file-name)))
+        (elpa-dir (expand-file-name (concat user-emacs-directory "elpa")))
+        (flag 0))  ; 0=DO compile .el file without corresponding .elc file
     (progn
-    (byte-recompile-directory elpa-dir flag)
-    (byte-recompile-directory local-repo-dir flag))))
-
-(defun my-recompile-init-dir ()
-  "Recompile changed .el files in my init directory."
-  (interactive)
-  (let ((compile-even-if-elc-does-not-exist-arg 0))
-    (byte-recompile-directory
-     my-init-dir
-     compile-even-if-elc-does-not-exist-arg)))
+      (byte-recompile-directory this-dir flag)
+      (byte-recompile-directory elpa-dir flag))))
 
 (defun my-copy-filename ()
   "Copy current buffer file name to the clipboard."
@@ -93,7 +141,10 @@ Save custom settings to Separate file and don't load it.
 (set-charset-priority 'unicode)
 (set-language-environment "UTF-8")
 #+end_src
-
+* Core - Time stamp formatting
+#+begin_src elisp
+(setq system-time-locale my-system-time-locale)
+#+end_src
 * init-backup
 #+begin_src elisp
 (let ((backup   `((".*" . ,(concat user-emacs-directory "backup/"))))

@@ -1,7 +1,6 @@
 (setq
- system-time-locale my-system-time-locale
  calendar-mark-holidays-flag t
- calendar-week-start-day 1              ; 1=Monday
+ calendar-week-start-day 1      ; 1=Monday
  calendar-date-style 'iso)
 
 (setq calendar-time-display-form '(24-hours ":" minutes))
