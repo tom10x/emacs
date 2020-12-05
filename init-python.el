@@ -21,8 +21,6 @@ See https://www.flake8rules.com/rules/E111.html")
   "Don't emit a warning when indentation guessing fails.
 This rarely fails in my experience, so the warning is mostly just annoying.")
 
-;; -----------------------------------------------
-
 (let ((offset   my-python-indent-default)
       (verbose  my-python-indent-guess-verbose))
   (setq
