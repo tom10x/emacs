@@ -213,8 +213,8 @@ Save custom settings to Separate file and don't load it.
  sentence-end-double-space nil            ; no, just no
  initial-scratch-message ""
  inhibit-startup-message t
- frame-title-format "%b (%f)"             ; show buffername and filename in frame title ...
- icon-title-format "%b (%f)"              ; ... and in iconified frame title
+ frame-title-format "%b"                  ; show buffername in frame title ...
+ icon-title-format "%b"                   ; ... and in iconified frame title
  confirm-kill-emacs 'y-or-n-p             ; prevent accidental exit
  confirm-kill-processes nil               ; no comfirmation on killing processes
  require-final-newline nil                ; no final newline
