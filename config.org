@@ -111,9 +111,9 @@ Save custom settings to Separate file and don't load it.
     auto-save-file-name-transforms auto
     auto-save-list-file-prefix session))
 #+end_src
-* init-calendar-se
+* Calendar and Time
 #+begin_src elisp
-(load (concat my-init-dir "init-calendar-sv"))
+(load (concat my-init-dir "calendar-sv"))
 #+end_src
 * init-spelling
 #+begin_src elisp
