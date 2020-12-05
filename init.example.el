@@ -18,6 +18,10 @@
 
 (add-to-list 'org-refile-targets '("fun.org" :maxlevel . 2) 'append)
 
+(setq org-link-abbrev-alist
+      '(("gmap"      . "https://maps.google.com/maps?q=%s")
+        ("gmail"     . "https://mail.google.com/mail/u/0/#inbox/%h")))
+
 (defun my-after-init-hook-setup ()
   (progn
     (org-agenda nil " ")
