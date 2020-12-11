@@ -130,11 +130,18 @@ Credit to http://pragmaticemacs.com/emacs/dont-kill-buffer-kill-this-buffer-inst
 * Core - Custom
 Save custom settings to Separate file and don't load it.
 
+If we wanted to load it we could do
+: (load custom-file 'noerror)
+
 #+begin_src elisp
 (setq custom-file (concat user-emacs-directory "custom.el"))
 #+end_src
 
 * Core - Encoding
+I don't know what this does:
+: (set-charset-priority 'unicode)
+Doesn't seem to hurt though.
+
 #+begin_src elisp
 (prefer-coding-system 'utf-8-unix)
 (set-default-coding-systems 'utf-8-unix)
@@ -145,7 +152,23 @@ Save custom settings to Separate file and don't load it.
 #+begin_src elisp
 (setq system-time-locale my-system-time-locale)
 #+end_src
-* init-backup
+* Core - Backup
+Backups, auto-saves, sessions, lockfiles.
+
+- backup files (~file)
+  Emacs creates a backup file the first time a buffer is saved, and ONLY the first time
+- auto-save files (#file#)
+- session files (<pid>-<hostname>~)
+  Emacs records information about interrupted sessions in files named
+  <pid>-<hostname>~ in the directory specified by auto-save-list-file-prefix
+- special "symbolic link" file on windows (.#file)
+  created on first modification of buffer visiting a file
+  created in the same directory as the file
+  file is removed when changes are saved
+
+See:
+- https://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html
+
 #+begin_src elisp
 (let ((backup   `((".*" . ,(concat user-emacs-directory "backup/"))))
       (auto     `((".*" ,(concat user-emacs-directory "auto-save/") t)))
@@ -162,13 +185,30 @@ Save custom settings to Separate file and don't load it.
     auto-save-file-name-transforms auto
     auto-save-list-file-prefix session))
 #+end_src
-* init-spelling
+* Spellcheck
+American and Swedish spellchecking with hunspell.
+
+In order to get words like "couldn't" and "I'm" to work, I had to
+manually edit the .aff file and add the apostrophe to
+WORDCHARS, like this:
+
+: WORDCHARS 0123456789’
+
+To find where the dictionary files are, run the spellcheck once, then check
+=ispell-hunspell-dict-paths-alist=
+
+Switch dictionary with =M-x ispell-change-dictionary=
+
+On Ubuntu 20.04
+- Package =hunspell-sv= provides =/usr/share/hunspell/sv_SE.dic=
+- Package =hunspell-en-us= provides =/usr/share/hunspell/en_US.dic= (may lack the apostrophe in WORDCHARS)
+
 #+begin_src elisp
 (setq
  ispell-program-name my-spelling-binary
  ispell-dictionary my-spelling-default-dictionary)
 #+end_src
-* init-dired
+* Dired
 #+begin_src elisp
 (setq
  ls-lisp-use-insert-directory-program nil  ; use ls-lisp.el instead of cmd line ls
@@ -316,6 +356,11 @@ Save custom settings to Separate file and don't load it.
 #+end_src
 
 * Templates
+** yasnippet
+Custom snippets go in =~/.emacs.d/snippets= and take precedence
+
+=yas-describe-tables= lists available snippets
+
 #+begin_src elisp
 (use-package yasnippet
   :ensure t
@@ -330,11 +375,21 @@ Save custom settings to Separate file and don't load it.
   (add-hook 'prog-mode-hook #'yas-minor-mode))
 #+end_src
 * Navigation
+** avy
+ivy uses avy if it's installed.
+
 #+begin_src elisp
 (use-package avy
   :ensure t
   :pin melpa-stable)
 #+end_src
+
+** ace-window
+
+Using melpa because, at the time of writing, current version is 0.9.0 released 2015, with 97 commits since then.
+
+See:
+- https://github.com/abo-abo/ace-window
 
 #+begin_src elisp
 (use-package ace-window
@@ -348,7 +403,10 @@ Save custom settings to Separate file and don't load it.
 #+end_src
 * Completion
 ** amx
-amx prioritizes most-used commands in =M-x= completion list. I used to use smex for this.
+amx prioritizes most-used commands in =M-x= completion list. I used to
+use smex for this.
+
+Also, ivy uses amx if it's installed.
 
 #+begin_src elisp
 (use-package amx
@@ -374,6 +432,18 @@ Keep a list of recently used files. ivy's virtual buffers
 #+end_src
 
 ** ivy
+Generic completion frontend (selection from list)
+
+=C-o m= toggles the current regexp builder.
+
+=(ivy-mode 1)= sets completing-read-function to ivy-completing-read.
+
+[2020-11-28 Sat] gnu has a more recent version (0.13.1) than melpa-stable (0.13.0)
+
+See:
+- https://github.com/abo-abo/swiper
+- http://oremacs.com/swiper/
+
 #+begin_src elisp
 (use-package ivy
   :ensure t
@@ -396,7 +466,15 @@ Keep a list of recently used files. ivy's virtual buffers
        :background "#ffff44" :foreground "#000000")
       (((class color) (background dark))
        :background "#ffff44" :foreground "#000000")))))
+#+end_src
 
+** ivy-rich
+Rich info for ivy searches
+
+See:
+- https://github.com/Yevgnen/ivy-rich
+
+#+begin_src elisp
 (use-package ivy-rich
   :ensure t
   :pin melpa-stable
@@ -416,6 +494,25 @@ Keep a list of recently used files. ivy's virtual buffers
 #+end_src
 
 ** company
+Text completion framework.
+
+=company-begin-backend= can be used to start a specific backend
+
+=M-n= / =M-p= cycles through options
+
+=M-(digit)= completes one of the first 10 candidates.
+
+Stops at the first backend (or group of backends) with a result.
+
+Comes with plenty of backends built-in, see e.g. https://github.com/company-mode/company-mode
+
+The most important backends for me:
+- =company-capf=, supports any major mode with a proper completion function
+- =company-dabbrev-code=, dynamic abbrev for code symbols
+- =company-dabbrev=, dynamic abbrev, not mode-specific
+- =company-files=, file names, not mode specific
+- =company-keywords=, programming language keywords, supports many modes
+
 #+begin_src elisp
 (use-package company
   :ensure t
@@ -443,12 +540,47 @@ Keep a list of recently used files. ivy's virtual buffers
 #+end_src
 
 * Searching
+** swiper
+isearch with an overview (incremental search)
+
+Notable minibuffer key bindings:
+
+=M-i= insert current candidate into the minibuffer
+
+[2020-11-28 Sat] gnu has a more recent version (0.13.1) than melpa-stable (0.13.0)
+
+See
+- https://github.com/abo-abo/swiper
+
 #+begin_src elisp
 (use-package swiper
   :ensure t
   :pin gnu)
 #+end_src
 * Syntex checking
+Standard tool for linting.
+
+Provides syntax checking via external external programs or services.
+Multiple checkers can be run in sequence, see
+=flycheck-add-next-checker=.
+
+Not using =global-flycheck-mode=, prefer to activate it when needed.
+
+Using melpa, because latest version is 31, which was released in 2017,
+and there's been 570+ commits since then.
+
+| Key     | Description          |
+|---------+----------------------|
+| C-c ! v | verify setup         |
+| C-c ! ? | describe checker     |
+| C-c ! l | show error list      |
+| M-g n   | go to next error     |
+| M-g p   | go to previous error |
+
+See:
+- https://www.flycheck.org
+- https://github.com/flycheck/flycheck
+
 #+begin_src elisp
 (use-package flycheck
   :ensure t
@@ -464,6 +596,12 @@ Keep a list of recently used files. ivy's virtual buffers
   (which-key-mode))
 #+end_src
 * Help
+** helpful
+Nicer emacs help
+
+See:
+- https://github.com/Wilfred/helpful
+
 #+begin_src elisp
 (use-package helpful
   :ensure t
@@ -473,6 +611,11 @@ Keep a list of recently used files. ivy's virtual buffers
   (counsel-describe-variable-function #'helpful-variable))
 #+end_src
 * Gnuplot
+Gnuplot support.
+
+See:
+- https://en.wikipedia.org/wiki/Gnuplot
+
 #+begin_src elisp
 (use-package gnuplot
   :ensure t
@@ -498,6 +641,35 @@ Keep a list of recently used files. ivy's virtual buffers
     (olivetti-mode t)))
 #+end_src
 * Magit
+Magit is a complete text-based user interface to Git.
+
+Most Magit commands are commonly invoked from the status buffer. It
+can be considered the primary interface for interacting with Git
+using Magit.
+
+Status buffer commands:
+
+| Key | Description                                                     |
+|-----+-----------------------------------------------------------------|
+| =p=   | prevous section                                                 |
+| =n=   | next section                                                    |
+| =q=   | quit                                                            |
+| =TAB= | fold/unfold sections                                            |
+| =s=   | stage at point to index, change remains in working tree         |
+| =u=   | unstage at point from index, change remains in working tree     |
+| =k=   | discard at point, remove from index if staged and working tree  |
+| =v=   | reverse                                                         |
+| =C-n= | next line inside hunk                                           |
+| =C-p= | next/previous line inside hunk                                  |
+| =C-.= | select part of hunk with C-. and C-n/C-p to stage/unstage parts |
+|     | C-n stage or unstage next part of hunk                          |
+|     | C-p stage or unstage previous part of hunk                      |
+| =c=   | show commit commands                                            |
+|     | C-c C-c create commit                                           |
+| =P=   | show push commands                                              |
+|     | p push                                                          |
+| =h=   | list transients                                                 |
+
 #+begin_src elisp
 (use-package magit
   :ensure t
@@ -505,6 +677,36 @@ Keep a list of recently used files. ivy's virtual buffers
 #+end_src
 
 * Projectile
+Commands available after prefix key:
+
+| Key | Description                                                                   |
+|-----+-------------------------------------------------------------------------------|
+| =p=   | Switch to project                                                             |
+| =f=   | Open file in project                                                          |
+| =s g= | Run grep on the files in the project.                                         |
+| =o=   | Runs multi-occur on all project buffers currently open.                       |
+| =r=   | Runs interactive query-replace on all files in the projects.                  |
+| =e=   | Shows a list of recently visited project files.                               |
+| =!=   | Runs shell-command in the root directory of the project.                      |
+| =C=   | Runs a standard configure command for your type of project.                   |
+| =c=   | Runs a standard compilation command for your type of project.                 |
+| =P=   | Runs a standard test command for your type of project.                        |
+| =l=   | Display a list of all files in a directory (that’s not necessarily a project) |
+
+The use-package way of defining a prefix key:
+#+begin_example
+:bind-keymap
+("C-c p" . projectile-command-map)
+#+end_example
+
+Another way to do it:
+#+begin_example
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+#+end_example
+
+See:
+- https://docs.projectile.mx/en/latest/
+
 #+begin_src elisp
 (use-package projectile
   :ensure t
@@ -527,6 +729,22 @@ Keep a list of recently used files. ivy's virtual buffers
 #+end_src
 
 * HTML .html
+My web-mode setup only supports editing .html files with the
+go-engine. I don't use web-mode for anything else, yet.
+
+web-mode issues:
+- [2020-11-28 Sat] Current release 17 on melpa-stable was a bit buggy
+  for me so I switched to melpa.
+- It seems =web-mode-engines-alist= is the only way to specify the
+  go-engine. I'd prefer to use .dir-locals, i.e. per project, but
+  web-mode won't pick it up from there. =dir-locals-set-class-variables=
+  doesn't seem to work either.
+
+See:
+- https://web-mode.org/
+
+The package =company-web= provides company backend =company-web-html= for web-mode.
+
 #+begin_src elisp
 (use-package company-web
   :ensure t
@@ -568,6 +786,10 @@ Keep a list of recently used files. ivy's virtual buffers
   :mode ("\\.html\\'"))
 #+end_src
 * JSON .json
+JSON file support.
+
+Without json-mode, Emacs uses js-mode for .json files.
+
 #+begin_src elisp
 (use-package json-mode
   :ensure t
@@ -581,12 +803,21 @@ Keep a list of recently used files. ivy's virtual buffers
   (json-mode . my-json-mode-hook))
 #+end_src
 * YAML .yml .yaml
+Support for .yml and .yaml files.
+
 #+begin_src elisp
 (use-package yaml-mode
   :ensure t
   :pin melpa-stable)
 #+end_src
 * Markdown .md
+Markdown file support.
+
+Dependencies:
+- See =my-markdown-command=
+
+See:
+- https://github.com/jrblevin/markdown-mode
 #+begin_src elisp
 (use-package markdown-mode
   :ensure t
