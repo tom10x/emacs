@@ -82,18 +82,22 @@ Setup package and use-package before any calls to use-package.
 * Utility Functions (=my-xxx=)
 
 #+begin_src elisp
-(defun my-recompile-all ()
-  "Recompile everything, including this directory and elpa.
-It's sometimes necessary to recompile a package.
-Remove the offending .elc files with e.g. `find *.elc -print0 | xargs -0 rm -f'
-Then call this function."
+(defun my-recompile-dir (dir)
+  "Compile all .el files in directory `dir' that either 1) has no .elc file,
+or 2) whose .elc file is older."
+  (let ((flag 0))
+    (byte-recompile-directory dir flag)))
+
+(defun my-recompile-elpa ()
+  "Compile all .el files in the default elpa directory using `my-recompile-dir'.
+
+It's sometimes necessary to recompile a package. Remove the
+offending .elc files with e.g. `find *.elc -print0 | xargs -0 rm
+-f' Then call this function. Or call `byte-recompile-directory'
+with the FORCE argument."
   (interactive)
-  (let ((this-dir (file-name-directory (or load-file-name buffer-file-name)))
-        (elpa-dir (expand-file-name (concat user-emacs-directory "elpa")))
-        (flag 0))  ; 0=DO compile .el file without corresponding .elc file
-    (progn
-      (byte-recompile-directory this-dir flag)
-      (byte-recompile-directory elpa-dir flag))))
+  (let ((dir (expand-file-name (concat user-emacs-directory "elpa"))))
+    (my-recompile-dir dir)))
 
 (defun my-copy-filename ()
   "Copy current buffer file name to the clipboard."
