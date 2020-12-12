@@ -1,33 +1,14 @@
-My Emacs configuration.
+* My Emacs configuration
 
-The file init.example.el is an example of how to use the configuration.
+The core configuration is in config.org. It can be extended by
+=load=-ing .el files with desired features. The example file
+init.example.el shows how to use the configuration.
 
-The core configuration is in config.org, which contains its own documentation.
-
-The core can be extended by =load=-ing extra .el files, which are documented below.
-
-* calendar-sv.el
-Calendar, date, and time config with a few Swedish tweaks.
-
-The function =sv-easter= was pretty much copied from https://bigwalter.net/daniel/elisp/sv-kalender.el
-* theme-doom.el
-Emacs doom-theme with doom-modeline.
-* keybindings.el
-Global keybindings.
-* org.el
-Org-mode.
-
-Note sure about
-: (setq org-agenda-prefer-last-repeat t)
-Removed it for now.
-
-See:
-- https://orgmode.org/manual/Export-settings.html
-- https://orgmode.org/manual/The-export-dispatcher.html
-* python.el
-Basic python setup using pyvenv, "Python virtual environment interface".
-
-See:
-- https://docs.python.org/3/library/venv.html
-* server.el
-Emacs server.
+| File           | Description                                 |
+|----------------+---------------------------------------------|
+| org.el         | org-mode                                    |
+| calendar-sv.el | Calendar and time setup suitable for Sweden |
+| theme-doom.el  | Dark theme with doom-modeline               |
+| keybindings.el | Global keybindings                          |
+| python.el      | Python                                      |
+| server.el      | Emacs server                                |
