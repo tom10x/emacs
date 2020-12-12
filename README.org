@@ -1,17 +1,11 @@
 My Emacs configuration.
 
-* init.example.el
-Example of what an init file might look like.
-* Notes on use-package
-Some notes about the use of use-package.
-** :init
-Code in :init is executed before module is loaded. It should not break
-things even if the module fails to load.
+The file init.example.el is an example of how to use the configuration.
 
-Keep :init as small as possible, i.e. put as much as possible in the
-:config block, this can improve startup time.
-** :ensure
-Using :ensure nil for built-in packages.
+The core configuration is in config.org, which contains its own documentation.
+
+The core can be extended by =load=-ing extra .el files, which are documented below.
+
 * calendar-sv.el
 Calendar, date, and time config with a few Swedish tweaks.
 
