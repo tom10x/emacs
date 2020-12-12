@@ -6,7 +6,8 @@
 (setq calendar-time-display-form '(24-hours ":" minutes))
 
 (defun sv-easter (year)
-  "Calculate the date for Easter in YEAR."
+  "Calculate the date for Easter in YEAR.
+Pretty much copied from https://bigwalter.net/daniel/elisp/sv-kalender.el"
   (let* ((century (1+ (/ year 100)))
          (shifted-epact (% (+ 14 (* 11 (% year 19))
                               (- (/ (* 3 century) 4))
