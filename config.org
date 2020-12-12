@@ -73,8 +73,7 @@ Setup package and use-package before any calls to use-package.
   (package-install 'use-package))
 (require 'use-package)
 #+end_src
-* Step 4 - Utilities
-Core utility functions.
+* Step 4 - Utility Functions (=my-xxx=)
 
 #+begin_src elisp
 (defun my-recompile-all ()
@@ -143,8 +142,7 @@ I honestly don't know what this does:
 : (set-charset-priority 'unicode)
 Doesn't seem to hurt though.
 
-* Step 7 - Automatic Saves
-** Backup Files =~file=
+* Backup Files =~file=
 Emacs creates a backup file (~) the first time a buffer is saved, and ONLY the first time.
 
 #+begin_src elisp
@@ -159,12 +157,12 @@ Emacs creates a backup file (~) the first time a buffer is saved, and ONLY the f
 (setq backup-directory-alist `((".*" . ,(concat user-emacs-directory "backup/"))))
 #+end_src
 
-** Auto-Save Files =#file#=
+* Auto-Save Files =#file#=
 #+begin_src elisp
 (setq auto-save-file-name-transforms `((".*" ,(concat user-emacs-directory "auto-save/") t)))
 #+end_src
 
-** Session Files =<pid>-<hostname>~=
+* Session Files =<pid>-<hostname>~=
 Emacs records information about interrupted sessions in files named
 =<pid>-<hostname>~= in the directory specified by
 =auto-save-list-file-prefix=
@@ -173,17 +171,96 @@ Emacs records information about interrupted sessions in files named
 (setq auto-save-list-file-prefix (concat user-emacs-directory "auto-save/"))
 #+end_src
 
-** Minibuffer History
-Save minibuffer history to =savehist-file= periodically and when exiting
-Emacs. No truncation, but do remove duplicates.
-
+* System
 #+begin_src elisp
+(setq
+ create-lockfiles nil                     ; no lockfiles, I'm the only user
+ system-time-locale my-time-locale        ; how to format timestamps
+ gc-cons-threshold (* 100 1024 1024)      ; boost garbage collection threshold
+ large-file-warning-threshold 100000000)  ; boost big file warning threshold
+ #+end_src
+* Startup
+#+begin_src elisp
+(setq
+  initial-scratch-message ""
+  inhibit-startup-message t)
+#+end_src
+* Minibuffer
+#+begin_src elisp
+(setq
+ epg-pinentry-mode 'loopback      ; allow query of passphrases in minibuffer
+ enable-recursive-minibuffers t)  ; allow interactive commands in minibuffer
+(tooltip-mode 0)                  ; show help text in minibuffer, not as tooltip
+
 (setq
  savehist-file (concat user-emacs-directory "savehist")
  history-length t                         ; no truncation of history lists
  history-delete-duplicates t
  savehist-save-minibuffer-history t)      ; save all recorded minibuffer histories
 (savehist-mode 1)
+#+end_src
+
+* Interaction and Feedback
+#+begin_src elisp
+(setq
+ x-stretch-cursor t         ; stretch cursor over char, nice for tabs
+ mouse-highlight nil        ; no highlight as mouse hovers over link
+ echo-keystrokes 0.3        ; echo unfinished commands "immediately"
+ ring-bell-function 'ignore               ; don't ring the bell
+ confirm-kill-emacs 'y-or-n-p             ; prevent accidental exit
+ confirm-kill-processes nil)              ; no comfirmation on killing processes
+(fset 'yes-or-no-p 'y-or-n-p)             ; y/n is good enough
+
+(when window-system
+  (global-hl-line-mode 1))   ; highlight current line
+(show-paren-mode 1)          ; show matching parentheses
+(auto-image-file-mode 1)     ; show images on visit
+(global-visual-line-mode 1)  ; wrap text but does not alter buffer text
+(blink-cursor-mode 0)        ; no blinking cursor
+#+end_src
+
+* Automatic Restore
+#+begin_src elisp
+(save-place-mode 1)                       ; go to last place in file on visit
+(setq
+ auto-revert-verbose nil)
+(global-auto-revert-mode t)               ; revert buffer if its file changes
+#+end_src
+
+* Editing
+#+begin_src elisp
+(setq
+ backward-delete-char-untabify-method nil ; backward delete on tab simply deletes the tab
+ shift-select-mode nil                    ; seems weird, don't want it
+ delete-by-moving-to-trash t              ; use system trash when applicable
+ sentence-end-double-space nil)
+
+(put 'upcase-region 'disabled nil)        ; allow upcase-region
+(put 'narrow-to-region 'disabled nil)     ; allow narrow-to-region
+
+(delete-selection-mode 1)                 ; replace selection with next typed char
+
+(setq abbrev-file-name (concat user-emacs-directory "abbrev_defs.el"))
+(setq-default abbrev-mode t)
+
+(setq-default
+ indent-tabs-mode nil                     ; no tabs for indentation, use spaces
+ tab-width my/indent-width)               ; distance between tab stops
+
+(setq
+ electric-pair-preserve-balance nil
+ electric-pair-skip-self t
+ electric-pair-inhibit-predicate 'ignore
+ electric-pair-skip-whitespace nil)
+(electric-pair-mode 1)
+#+end_src
+
+* Automatic Editing
+#+begin_src elisp
+(add-hook 'before-save-hook #'delete-trailing-whitespace)
+(setq
+ require-final-newline nil              ; no final newline
+ mode-require-final-newline nil)        ; no final newline, really
 #+end_src
 
 * Spellcheck
@@ -241,78 +318,17 @@ On Ubuntu 20.04
  (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
 #+end_src
 
-* Core - Uncategorized
+* Emacs Frame (Window)
 #+begin_src elisp
-(setq
- create-lockfiles nil                     ; no lockfiles, I'm the only user
- system-time-locale my-time-locale        ; how to format timestamps
- gc-cons-threshold (* 100 1024 1024)      ; boost garbage collection threshold
- large-file-warning-threshold 100000000   ; boost big file warning threshold
- epg-pinentry-mode 'loopback              ; allow query of passphrases in minibuffer
- backward-delete-char-untabify-method nil ; backward delete on tab simply deletes the tab
- shift-select-mode nil                    ; seems weird, don't want it
- enable-recursive-minibuffers t           ; allow interactive commands in minibuffer
- delete-by-moving-to-trash t              ; use system trash when applicable
- sentence-end-double-space nil            ; no, just no
- initial-scratch-message ""
- inhibit-startup-message t
- frame-title-format "%b"                  ; show buffername in frame title ...
- icon-title-format "%b"                   ; ... and in iconified frame title
- confirm-kill-emacs 'y-or-n-p             ; prevent accidental exit
- confirm-kill-processes nil               ; no comfirmation on killing processes
- require-final-newline nil                ; no final newline
- mode-require-final-newline nil           ; no final newline, really
- ring-bell-function 'ignore               ; don't ring the bell
- echo-keystrokes 0.3                      ; echo unfinished commands "immediately"
- x-stretch-cursor t                       ; stretch cursor over char, nice for tabs
- mouse-highlight nil)                     ; no highlight as mouse hovers over link
-
-(fset 'yes-or-no-p 'y-or-n-p)             ; y/n is good enough
-(put 'upcase-region 'disabled nil)        ; allow upcase-region
-(put 'narrow-to-region 'disabled nil)     ; allow narrow-to-region
-
-(defalias 'list-buffers 'ibuffer)
-
-(show-paren-mode 1)                       ; show matching parentheses
-(delete-selection-mode 1)                 ; replace selection with next typed char
-(auto-image-file-mode 1)                  ; show images on visit
-(tooltip-mode 0)                          ; show help text in minibuffer, not as tooltip
 (tool-bar-mode 0)                         ; no icon tool bar
 (menu-bar-mode 0)                         ; no menu bar
-(blink-cursor-mode 0)                     ; no blinking cursor
-(column-number-mode 1)
-(line-number-mode 1)
-(size-indication-mode 0)                  ; no buffer size info in modeline
-(save-place-mode 1)                       ; go to last place in file on visit
-(global-visual-line-mode 1)
-
-(when window-system
-  (global-hl-line-mode 1))                ; highlight current line
-
-(setq abbrev-file-name (concat user-emacs-directory "abbrev_defs.el"))
-(setq-default abbrev-mode t)
-
-(add-hook 'before-save-hook #'delete-trailing-whitespace)
 
 (setq
- auto-revert-verbose nil)
-(global-auto-revert-mode t)               ; revert buffer if its file changes
-
-(setq-default
- indent-tabs-mode nil                     ; no tabs for indentation, use spaces
- tab-width my/indent-width                ; distance between tab stops
- sh-basic-offset my/indent-width)
-(setq tab-always-indent 'complete)        ; not all modes respect this variable
-
-(setq
- electric-pair-preserve-balance nil
- electric-pair-skip-self t
- electric-pair-inhibit-predicate 'ignore
- electric-pair-skip-whitespace nil)
-(electric-pair-mode 1)
+ frame-title-format "%b"                  ; show buffername in frame title ...
+ icon-title-format "%b")                  ; ... and in iconified frame title
 #+end_src
-* Core - GUI
-** Scrollbars
+
+* Scrollbars
 #+begin_src elisp
 (setq
  scroll-conservatively 10000              ; >100 so redisplay will never recenter point
@@ -323,17 +339,22 @@ On Ubuntu 20.04
 (scroll-bar-mode 0)                       ; no scroll bar
 #+end_src
 
-** Window dividers
+* Buffers and Windows (Frames)
 #+begin_src elisp
+(defalias 'list-buffers 'ibuffer)
+
 (setq
  window-divider-default-places 'right-only
  window-divider-default-right-width 3)
 (window-divider-mode 1)
 #+end_src
 
-* Appearance
-** delight (doom-modeline belongs in this)
+* Modeline
 #+begin_src elisp
+(size-indication-mode 0)     ; no buffer size info
+(column-number-mode 1)       ; show column number
+(line-number-mode 1)         ; show line number
+
 (use-package delight
   :ensure t
   :pin gnu
@@ -344,15 +365,7 @@ On Ubuntu 20.04
   (delight 'auto-revert-mode nil t))
 #+end_src
 
-** all-the-icons
-#+begin_src elisp
-(use-package all-the-icons
-  :ensure t
-  :pin melpa-stable)
-#+end_src
-
-* Templates
-** yasnippet
+* yasnippet Templates
 Custom snippets go in =~/.emacs.d/snippets= and take precedence
 
 =yas-describe-tables= lists available snippets
@@ -382,7 +395,7 @@ ivy uses avy if it's installed.
 
 ** ace-window
 
-Using melpa because, at the time of writing, current version is 0.9.0 released 2015, with 97 commits since then.
+Using melpa because at time of writing, current version is 0.9.0 released 2015 with 97 commits since then.
 
 See:
 - https://github.com/abo-abo/ace-window
@@ -398,6 +411,9 @@ See:
    aw-background nil))
 #+end_src
 * Completion
+#+begin_src elisp
+(setq tab-always-indent 'complete)        ; not all modes respect this variable
+#+end_src
 ** amx
 amx prioritizes most-used commands in =M-x= completion list. I used to
 use smex for this.
@@ -535,8 +551,7 @@ The most important backends for me:
         ("C-p" . company-select-previous)))
 #+end_src
 
-* Searching
-** swiper
+* swiper
 isearch with an overview (incremental search)
 
 Notable minibuffer key bindings:
@@ -553,7 +568,7 @@ See
   :ensure t
   :pin gnu)
 #+end_src
-* Syntex checking
+* flycheck
 Standard tool for linting.
 
 Provides syntax checking via external external programs or services.
@@ -582,7 +597,7 @@ See:
   :ensure t
   :pin melpa)
 #+end_src
-* Discover
+* which-key
 #+begin_src elisp
 (use-package which-key
   :ensure t
@@ -591,8 +606,7 @@ See:
   :config
   (which-key-mode))
 #+end_src
-* Help
-** helpful
+* helpful
 Nicer emacs help
 
 See:
@@ -602,11 +616,13 @@ See:
 (use-package helpful
   :ensure t
   :pin melpa-stable
+  :init
+  (setq helpful-max-buffers 1)
   :custom
   (counsel-describe-function-function #'helpful-callable)
   (counsel-describe-variable-function #'helpful-variable))
 #+end_src
-* Gnuplot
+* gnuplot
 Gnuplot support.
 
 See:

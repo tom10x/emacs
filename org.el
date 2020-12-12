@@ -40,6 +40,10 @@ The second part is the headline, where an empty one means append to eof.")
 
 ;; ------------------------------------------------
 
+(use-package all-the-icons
+  :ensure t
+  :pin melpa-stable)
+
 (use-package org
   :ensure t
   :pin gnu
