@@ -1,8 +1,4 @@
-#+TITLE: My Emacs Configuration
-
-* 1. Setup
-Do setup first.
-
+* Step 1 - Setup
 #+begin_src elisp
 (defvar
   my/indent-width 2
@@ -23,7 +19,7 @@ Do setup first.
   "Package archive priorities.")
 
 (defvar
-  my-system-time-locale
+  my-time-locale
   "C"
   "Controls e.g. org-mode weekday names. `C' means: use English weekdays.")
 
@@ -55,16 +51,14 @@ On GNU/Linux, add this to the ~/.profile file:
 
   export %s=%s" env env collate))))
 #+end_src
-* 2. Core - Security
-Setup security before any external calls.
-
+* Step 2 - Security
 #+begin_src elisp
 (setq
  tls-checktrust t
  gnutls-verify-error t)
 #+end_src
 
-* 3. Core - Package setup
+* Step 3 - Packages
 Setup package and use-package before any calls to use-package.
 
 #+begin_src elisp
@@ -79,8 +73,8 @@ Setup package and use-package before any calls to use-package.
   (package-install 'use-package))
 (require 'use-package)
 #+end_src
-* 4. Core - Utils
-My core utility functions.
+* Step 4 - Utilities
+Core utility functions.
 
 #+begin_src elisp
 (defun my-recompile-all ()
@@ -127,8 +121,8 @@ Credit to http://pragmaticemacs.com/emacs/dont-kill-buffer-kill-this-buffer-inst
   (kill-buffer (current-buffer)))
 #+end_src
 
-* Core - Custom
-Save custom settings to Separate file and don't load it.
+* Step 5 - Custom File
+Save custom settings to separate file and don't load it.
 
 If we wanted to load it we could do
 : (load custom-file 'noerror)
@@ -137,54 +131,61 @@ If we wanted to load it we could do
 (setq custom-file (concat user-emacs-directory "custom.el"))
 #+end_src
 
-* Core - Encoding
-I don't know what this does:
-: (set-charset-priority 'unicode)
-Doesn't seem to hurt though.
-
+* Step 6 - Encoding
 #+begin_src elisp
 (prefer-coding-system 'utf-8-unix)
 (set-default-coding-systems 'utf-8-unix)
 (set-charset-priority 'unicode)
 (set-language-environment "UTF-8")
 #+end_src
-* Core - Time stamp formatting
-#+begin_src elisp
-(setq system-time-locale my-system-time-locale)
-#+end_src
-* Core - Backup
-Backups, auto-saves, sessions, lockfiles.
 
-- backup files (~file)
-  Emacs creates a backup file the first time a buffer is saved, and ONLY the first time
-- auto-save files (#file#)
-- session files (<pid>-<hostname>~)
-  Emacs records information about interrupted sessions in files named
-  <pid>-<hostname>~ in the directory specified by auto-save-list-file-prefix
-- special "symbolic link" file on windows (.#file)
-  created on first modification of buffer visiting a file
-  created in the same directory as the file
-  file is removed when changes are saved
+I honestly don't know what this does:
+: (set-charset-priority 'unicode)
+Doesn't seem to hurt though.
 
-See:
-- https://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html
+* Step 7 - Automatic Saves
+** Backup Files =~file=
+Emacs creates a backup file (~) the first time a buffer is saved, and ONLY the first time.
 
 #+begin_src elisp
-(let ((backup   `((".*" . ,(concat user-emacs-directory "backup/"))))
-      (auto     `((".*" ,(concat user-emacs-directory "auto-save/") t)))
-      (session   (concat user-emacs-directory "auto-save/")))
-  (setq
-    backup-by-copying-when-mismatch t ; try to preserve owner and group
-    delete-old-versions t             ; delete excess backup versions silently
-    version-control t                 ; make numeric backup versions unconditionally
-    vc-make-backup-files t            ; do backup files under version control
-    create-lockfiles nil              ; no lockfiles, I'm the only user
-    kept-new-versions 16
-    kept-old-versions 5
-    backup-directory-alist backup
-    auto-save-file-name-transforms auto
-    auto-save-list-file-prefix session))
+(setq
+ backup-by-copying-when-mismatch t  ; try to preserve owner and group
+ delete-old-versions t              ; delete excess backup versions silently
+ version-control t                  ; make numeric backup versions unconditionally
+ vc-make-backup-files t             ; do backup files under version control
+ kept-new-versions 16               ; new versions to keep on new numbered backup
+ kept-old-versions 5)               ; old versions to keep on new numbered backup
+
+(setq backup-directory-alist `((".*" . ,(concat user-emacs-directory "backup/"))))
 #+end_src
+
+** Auto-Save Files =#file#=
+#+begin_src elisp
+(setq auto-save-file-name-transforms `((".*" ,(concat user-emacs-directory "auto-save/") t)))
+#+end_src
+
+** Session Files =<pid>-<hostname>~=
+Emacs records information about interrupted sessions in files named
+=<pid>-<hostname>~= in the directory specified by
+=auto-save-list-file-prefix=
+
+#+begin_src elisp
+(setq auto-save-list-file-prefix (concat user-emacs-directory "auto-save/"))
+#+end_src
+
+** Minibuffer History
+Save minibuffer history to =savehist-file= periodically and when exiting
+Emacs. No truncation, but do remove duplicates.
+
+#+begin_src elisp
+(setq
+ savehist-file (concat user-emacs-directory "savehist")
+ history-length t                         ; no truncation of history lists
+ history-delete-duplicates t
+ savehist-save-minibuffer-history t)      ; save all recorded minibuffer histories
+(savehist-mode 1)
+#+end_src
+
 * Spellcheck
 American and Swedish spellchecking with hunspell.
 
@@ -243,6 +244,8 @@ On Ubuntu 20.04
 * Core - Uncategorized
 #+begin_src elisp
 (setq
+ create-lockfiles nil                     ; no lockfiles, I'm the only user
+ system-time-locale my-time-locale        ; how to format timestamps
  gc-cons-threshold (* 100 1024 1024)      ; boost garbage collection threshold
  large-file-warning-threshold 100000000   ; boost big file warning threshold
  epg-pinentry-mode 'loopback              ; allow query of passphrases in minibuffer
@@ -300,13 +303,6 @@ On Ubuntu 20.04
  tab-width my/indent-width                ; distance between tab stops
  sh-basic-offset my/indent-width)
 (setq tab-always-indent 'complete)        ; not all modes respect this variable
-
-(setq
- savehist-file (concat user-emacs-directory "savehist")
- history-length t                         ; no truncation of history
- history-delete-duplicates t
- savehist-save-minibuffer-history t)      ; save all recorded minibuffer histories
-(savehist-mode 1)
 
 (setq
  electric-pair-preserve-balance nil
