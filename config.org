@@ -51,6 +51,7 @@ On GNU/Linux, add this to the ~/.profile file:
 
   export %s=%s" env env collate))))
 #+end_src
+
 * System
 #+begin_src elisp
 (setq
@@ -182,6 +183,7 @@ Emacs records information about interrupted sessions in files named
   initial-scratch-message ""
   inhibit-startup-message t)
 #+end_src
+
 * Minibuffer
 #+begin_src elisp
 (setq
@@ -376,6 +378,7 @@ Custom snippets go in =~/.emacs.d/snippets= and take precedence
   (yas-reload-all)
   (add-hook 'prog-mode-hook #'yas-minor-mode))
 #+end_src
+
 * Navigation
 ** avy
 ivy uses avy if it's installed.
@@ -565,6 +568,7 @@ See
   :ensure t
   :pin gnu)
 #+end_src
+
 * flycheck
 Standard tool for linting.
 
@@ -603,6 +607,7 @@ See:
   :config
   (which-key-mode))
 #+end_src
+
 * helpful
 Nicer emacs help
 
@@ -619,6 +624,7 @@ See:
   (counsel-describe-function-function #'helpful-callable)
   (counsel-describe-variable-function #'helpful-variable))
 #+end_src
+
 * gnuplot
 Gnuplot support.
 
@@ -630,6 +636,7 @@ See:
   :ensure t
   :pin melpa-stable)
 #+end_src
+
 * Distraction-Free Writing
 #+begin_src elisp
 (use-package olivetti
@@ -649,6 +656,7 @@ See:
        (insert "“”")))
     (olivetti-mode t)))
 #+end_src
+
 * Magit
 Magit is a complete text-based user interface to Git.
 
@@ -813,6 +821,7 @@ Without json-mode, Emacs uses js-mode for .json files.
   :hook
   (json-mode . my-json-mode-hook))
 #+end_src
+
 * YAML
 Edit YAML files (.yml and .yaml).
 
@@ -821,6 +830,7 @@ Edit YAML files (.yml and .yaml).
   :ensure t
   :pin melpa-stable)
 #+end_src
+
 * Markdown
 Edit Markdown files (.md).
 
@@ -829,6 +839,7 @@ Dependencies:
 
 See:
 - https://github.com/jrblevin/markdown-mode
+
 #+begin_src elisp
 (use-package markdown-mode
   :ensure t
