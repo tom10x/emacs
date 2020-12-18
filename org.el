@@ -281,8 +281,7 @@ Important to skip certain regions, e.g. begin_src ... end_src"
   (add-hook 'org-mode-hook 'org-indent-mode)
   (add-hook 'org-mode-hook #'yas-minor-mode)
 
-  (org-id-update-id-locations
-   (file-expand-wildcards (concat my-org-dir "*.org") t)))
+  (org-id-update-id-locations))
 
 (defun my-org-add-ids-to-headlines-in-buffer ()
   "Add ID properties to all headlines in the current buffer which do not already have one."
