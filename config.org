@@ -57,6 +57,7 @@ On GNU/Linux, add this to the ~/.profile file:
 (setq
  tls-checktrust t
  gnutls-verify-error t
+ process-connection-type nil              ; seems more stable
  delete-by-moving-to-trash t              ; use system trash when applicable
  create-lockfiles nil                     ; no lockfiles, I'm the only user
  system-time-locale my-time-locale        ; how to format timestamps
@@ -286,6 +287,9 @@ On Ubuntu 20.04
  ispell-dictionary my-spelling-default-dictionary)
 #+end_src
 * Dired
+Keybindings:
+- =!= or =X= calls =dired-do-shell-command=, see =dired-guess-shell-alist-user= below
+
 #+begin_src elisp
 (setq
  ls-lisp-use-insert-directory-program nil  ; use ls-lisp.el instead of cmd line ls
