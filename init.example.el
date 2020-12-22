@@ -9,7 +9,8 @@
   (load (concat dir "calendar-sv"))
   (load (concat dir "org"))
   (load (concat dir "python"))
-  (load (concat dir "theme-doom"))
+  (load (concat dir "doom-theme-dracula"))
+  (load (concat dir "doom-modeline"))
   (load (concat dir "server"))
   (load (concat dir "keybindings")))
 
