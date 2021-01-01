@@ -546,8 +546,8 @@ The most important backends for me:
    company-dabbrev-ignore-case 'ignore-case-in-candidate-selection
    company-tooltip-align-annotations t
    company-backends
-   '((company-files company-keywords company-capf)
-     (company-dabbrev-code company-etags)
+   '(company-capf company-files
+     (company-dabbrev-code company-etags company-keywords)
      company-dabbrev))
   :config
   (global-company-mode 1)
