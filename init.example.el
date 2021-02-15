@@ -23,6 +23,15 @@
       '(("gmap"      . "https://maps.google.com/maps?q=%s")
         ("gmail"     . "https://mail.google.com/mail/u/0/#inbox/%h")))
 
+;; Load extra languages for org-mode
+(setq
+ org-babel-default-header-args:lua '((:results . "output verbatim replace"))
+ org-babel-default-header-args:python '((:results . "output verbatim replace")))
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((lua .t)
+   (python .t)))
+
 (defun my-after-init-hook-setup ()
   (progn
     (org-agenda nil " ")
