@@ -553,6 +553,8 @@ The most important backends for me:
   (global-company-mode 1)
   :bind
   (:map company-active-map
+        ("<return>" . nil)  ; must also nil RET
+        ("RET" . nil)       ; must also nil <return>
         ("M-n" . nil)
         ("M-p" . nil)
         ("C-n" . company-select-next)
