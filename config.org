@@ -526,7 +526,7 @@ Stops at the first backend (or group of backends) with a result.
 
 Comes with plenty of backends built-in, see e.g. https://github.com/company-mode/company-mode
 
-The most important backends for me:
+Some notable backends:
 - =company-capf=, supports any major mode with a proper completion function
 - =company-dabbrev-code=, dynamic abbrev for code symbols
 - =company-dabbrev=, dynamic abbrev, not mode-specific
@@ -546,9 +546,9 @@ The most important backends for me:
    company-dabbrev-ignore-case 'ignore-case-in-candidate-selection
    company-tooltip-align-annotations t
    company-backends
-   '(company-capf company-files
-     (company-dabbrev-code company-etags company-keywords)
-     company-dabbrev))
+   '((company-capf company-files
+     company-dabbrev-code company-etags company-keywords
+     company-dabbrev)))
   :config
   (global-company-mode 1)
   :bind
