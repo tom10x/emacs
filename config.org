@@ -533,6 +533,14 @@ Some notable backends:
 - =company-files=, file names, not mode specific
 - =company-keywords=, programming language keywords, supports many modes
 
+This would prevent enter (return) from completing:
+#+begin_example
+(:map company-active-map
+      ("<return>" . nil)  ; must also nil RET
+      ("RET" . nil))      ; must also nil <return>
+#+end_example
+I tried it for a while but eventually restored default behavior.
+
 #+begin_src elisp
 (use-package company
   :ensure t
@@ -542,6 +550,7 @@ Some notable backends:
   (setq
    company-idle-delay 0.5
    company-minimum-prefix-length 3
+   company-dabbrev-code-ignore-case t
    company-dabbrev-downcase nil
    company-dabbrev-ignore-case 'ignore-case-in-candidate-selection
    company-tooltip-align-annotations t
@@ -553,8 +562,6 @@ Some notable backends:
   (global-company-mode 1)
   :bind
   (:map company-active-map
-        ("<return>" . nil)  ; must also nil RET
-        ("RET" . nil)       ; must also nil <return>
         ("M-n" . nil)
         ("M-p" . nil)
         ("C-n" . company-select-next)
