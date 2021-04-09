@@ -416,7 +416,7 @@ See:
 #+end_src
 * Completion
 #+begin_src elisp
-(setq tab-always-indent 'complete)        ; not all modes respect this variable
+(setq tab-always-indent t)        ; not all modes respect this variable
 
 (setq abbrev-file-name (concat user-emacs-directory "abbrev_defs.el"))
 (setq-default abbrev-mode t)
