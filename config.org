@@ -870,4 +870,6 @@ See:
   (("README\\.md\\'" . gfm-mode)
    ("\\.md\\'" . markdown-mode)
    ("\\.markdown\\'" . markdown-mode)))
+
+(add-hook 'markdown-mode-hook 'turn-on-auto-fill)
 #+end_src
