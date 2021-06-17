@@ -864,6 +864,8 @@ See:
   :init
   (setq
    markdown-command my-markdown-command
+   markdown-hide-markup t
+   markdown-header-scaling t
    markdown-enable-prefix-prompts nil
    markdown-use-pandoc-style-yaml-metadata t)
   :mode
@@ -871,5 +873,9 @@ See:
    ("\\.md\\'" . markdown-mode)
    ("\\.markdown\\'" . markdown-mode)))
 
-(add-hook 'markdown-mode-hook 'turn-on-auto-fill)
+(add-hook 'markdown-mode-hook
+          (lambda ()
+            (progn
+              (turn-on-auto-fill)
+              (olivetti-mode))))
 #+end_src
