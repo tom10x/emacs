@@ -497,7 +497,7 @@ See:
 #+begin_src elisp
 (use-package ivy-rich
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :config
   (ivy-rich-mode 1))
 #+end_src
@@ -634,7 +634,7 @@ See:
 #+begin_src elisp
 (use-package helpful
   :ensure t
-  :pin melpa-stable
+  :pin melpa
   :init
   (setq helpful-max-buffers 1)
   :custom
